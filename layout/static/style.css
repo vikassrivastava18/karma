@@ -1,0 +1,24 @@
+body {
+    background-image: url("karma2.jpg");
+}
+
+header > h2 {
+    color: crimson;
+}
+
+.karma, .doing, .done {
+    padding: 10px;
+    border: 2px dotted;
+}
+
+.karma {
+    background-color: lightcoral;
+}
+
+.doing {
+    background-color: lightgoldenrodyellow;
+}
+
+.done {
+    background-color: lightgreen;
+}
