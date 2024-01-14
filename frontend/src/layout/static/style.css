@@ -1,0 +1,30 @@
+body {
+    background-image: url("kelly-sikkema-work.jpg");
+    background-size: cover;
+    /* background-blend-mode: luminosity; */
+}
+
+header > h2 {
+    color: crimson;
+}
+
+.karma, .doing, .done {
+    padding: 10px;
+    border: 2px solid white;
+}
+
+.karma {
+    background-color: lightcoral;
+}
+
+.doing {
+    background-color: lightgoldenrodyellow;
+}
+
+.done {
+    background-color: lightgreen;
+}
+
+h4 {
+    color: #fff;
+}
