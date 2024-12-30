@@ -1,12 +1,5 @@
 <template>
-    <header>
-        <h1>KARMA</h1>
-        <!-- <nav>
-            <ul>
-                <li>Login</li>
-            </ul>
-        </nav> -->
-    </header>
+    <HeaderComponent />
 
     <main>
         <RouterView />
@@ -15,9 +8,20 @@
 </template>
 
 <script>
+import HeaderComponent from './components/HeaderComponent.vue';
+
+
 export default {
     name: 'App',
+    methods: {
+
+    },
+    components: {
+        HeaderComponent
+    }
+
 }
+
 </script>
 
 <style>

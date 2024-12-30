@@ -2,6 +2,7 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import store from './store'
 import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -24,4 +25,4 @@ createApp(App)
 .mount('#app')
 
 // filepath: /c:/Users/vikas/OneDrive/Desktop/karma/frontend/karma/src/main.js
-import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+

@@ -11,6 +11,7 @@ def next_day_date():
     # Get the next date from now
     return timezone.now() + timedelta(days=1)
 
+
 class KarmaType(models.TextChoices):
     PRAYER = "pr", _("Prayer")
     STUDY = "st", _("Study")
@@ -60,7 +61,4 @@ class DayReview(models.Model):
 
     def __str__(self):
         return f"Review: {self.review:20}"
-
-
-    
     

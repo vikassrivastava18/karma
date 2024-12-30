@@ -60,7 +60,7 @@ export default {
                 const data = await res.json()
                 console.log('Success:', data)
                 // Seth the token in local storage
-                localStorage.setItem('token', data.token)
+                localStorage.setItem('Authentication-Token', data.token)
                 // Set the state of isAuthenticated to true
                 this.login()
                 // Redirect to the home page
@@ -82,7 +82,7 @@ export default {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    width: 40vw;
+    width: 30vw;
 }
 
 form {
