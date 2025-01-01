@@ -16,3 +16,11 @@
 
 <script>
 </script>
+
+<style>
+.toast-header {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border-bottom: 1px solid #bee5eb;
+}
+</style>

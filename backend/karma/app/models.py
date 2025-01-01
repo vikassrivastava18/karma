@@ -18,6 +18,7 @@ class KarmaType(models.TextChoices):
     WORK = "wo", _("Work")
     FAMILY = "ho", _("Home")
     PUBLIC = "pu", _("People")
+    PLAY = "pl", _("Play")
 
 
 class KarmaReview(models.TextChoices):
@@ -34,7 +35,7 @@ class Karma(models.Model):
     """
     title = models.CharField(max_length=32)
     karma = models.CharField(max_length=128)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField()
     due_date = models.DateField(default=next_day_date)
     daily = models.BooleanField(default=True)
     type = models.CharField(
@@ -48,6 +49,9 @@ class Karma(models.Model):
         default=KarmaReview.PENDING
     )
 
+    def get_review_display_name(self):
+        return self.get_review_display()
+    
     def __str__(self):
         return f"Task: {self.karma}, Review: {self.review}"
     

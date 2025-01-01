@@ -1,94 +1,62 @@
 <template>
     <div class="wrapper">
-        
-        <div class="container"            
-            >
+
+        <div class="container">
             <h2>
-                TODO             
+                TODO
                 <!-- Button trigger modal -->
                 <button type="button" class="btn px-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     <img src="../assets/create.png" width="20" alt="create list">
-                </button>            
+                </button>
             </h2>
-            <div class="cards-wrapper"
-                :key="todo"
-                @drop="onDrop($event, 'todo')"
-                @dragenter.prevent
-                @dragover.prevent>
-                <card v-for="karma of todos" 
-                    :key="karma.id" :id="karma.id" class="card"
-                    draggable="true"
+            <div class="cards-wrapper" :key="todo" @drop="onDrop($event, 'pe')" @dragenter.prevent @dragover.prevent>
+                <card v-for="karma of todos" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
-                    <div class="type">
-                        <span class="type-text">
-                            {{ karma.type }}
-                        </span>
-                    </div>
+
                     <span class="title">
                         {{ karma.title }}
                     </span>
-                    <span class="content">
-                        {{ karma.content }}
+
+                    <span class="content" v-html="karma.karma">
+
                     </span>
 
                 </card>
             </div>
         </div>
 
-        <div class="container" id="satisfied"
-            >
+        <div class="container" id="satisfied">
             <h2>
                 SATISFIED
             </h2>
-            <div class="cards-wrapper"
-                :key="satisfied"
-                @drop="onDrop($event, 'satisfied')"
-                @dragenter.prevent
+            <div class="cards-wrapper" :key="satisfied" @drop="onDrop($event, 'sa')" @dragenter.prevent
                 @dragover.prevent>
-                <card v-for="karma of satisfied" 
-                    :key="karma.id" :id="karma.id" class="card"
-                    draggable="true"
+                <card v-for="karma of satisfied" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
-                    <div class="type">
-                        <span class="type-text">
-                            {{ karma.type }}
-                        </span>
-                    </div>
+
                     <span class="title">
                         {{ karma.title }}
                     </span>
-                    <span class="content">
-                        {{ karma.content }}
+                    <span class="content" v-html="karma.karma">
                     </span>
 
                 </card>
             </div>
         </div>
 
-        <div class="container" id="unsatisfied"
-            >
+        <div class="container" id="unsatisfied">
             <h2>
                 UNSATISFIED
             </h2>
-            <div class="cards-wrapper"
-                :key="unsatisfied"
-                @drop="onDrop($event, 'unsatisfied')"
-                @dragenter.prevent
+            <div class="cards-wrapper" :key="unsatisfied" @drop="onDrop($event, 'us')" @dragenter.prevent
                 @dragover.prevent>
-                <card v-for="karma of unsatisfied" 
-                    :key="karma.id" :id="karma.id" class="card"
-                    draggable="true"
+                <card v-for="karma of unsatisfied" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
-                    <div class="type">
-                        <span class="type-text">
-                            {{ karma.type }}
-                        </span>
-                    </div>
+
                     <span class="title">
                         {{ karma.title }}
                     </span>
-                    <span class="content">
-                        {{ karma.content }}
+                    <span class="content" v-html="karma.karma">
                     </span>
 
                 </card>
@@ -98,6 +66,8 @@
     </div>
 
     <ToastComponent />
+
+    <ErrorToastComponent />
 
     <ModalComponent />
 </template>
@@ -110,6 +80,9 @@ import { mapState } from 'vuex'
 import { Toast } from 'bootstrap'
 import ModalComponent from '../components/ModalComponent.vue';
 import ToastComponent from '../components/ToastComponent.vue';
+import ErrorToastComponent from '../components/ErrorToastComponent.vue';
+
+const baseUrl = 'http://localhost:8000';
 
 export default {
     name: 'HomePage',
@@ -118,164 +91,142 @@ export default {
     },
     components: {
         ModalComponent,
-        ToastComponent
+        ToastComponent,
+        ErrorToastComponent
     },
     data() {
         return {
-            karmas: [
-                {
-                id: 1,
-                title: 'Test Story',
-                content: 'This is test content of a story. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
-                priority: 'low',
-                type: 'pray',
-                status: 'todo',
-                src: '..assets/pray.svg'
-            },
-            {
-                id: 2,
-                title: 'Code Push',
-                content: 'This is test content of a story. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
-                priority: 'low',
-                type: 'study',
-                status: 'todo',
-                src: '..assets/pray.svg'
-            },
-            {
-
-                id: 3,
-                title: 'Test Story',
-                content: 'This is test content of a story. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
-                priority: 'low',
-                type: 'prayer',
-                status: 'satisfied',
-                src: '..assets/pray.svg'
-            },
-            {
-                id: 4,
-                title: 'Code Push',
-                content: 'This is test content of a story. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
-                priority: 'low',
-                type: 'work',
-                status: 'satisfied',
-                src: '..assets/pray.svg'
-            },
-            {
-
-                id: 5,
-                title: 'Test Story',
-                content: 'This is test content of a story. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
-                priority: 'low',
-                type: 'pray',
-                status: 'unsatisfied',
-                src: '..assets/pray.svg'
-            },
-            {
-                id: 6,
-                title: 'Code Push',
-                content: 'This is test content of a story. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam',
-                priority: 'low',
-                type: 'work',
-                status: 'unsatisfied',
-                src: '..assets/pray.svg'
-            }
-        ],
-        todos: [],
-        satisfied: [],
-        unsatisfied: []            
+            karmas: [],
+            todos: [],
+            satisfied: [],
+            unsatisfied: []
         }
     },
     mounted() {
         // Check if the user is authenticated
         console.log("Authenticated?", this.$store.state.isAuthenticated);
-        
+
         if (!this.$store.state.isAuthenticated) {
-            this.$router.push({path: '/login'});
+            this.$router.push({ path: '/login' });
         }
-
-        this.filterItems()
-        // self = this
-        // CustomFetch(`http://127.0.0.1:8080/api/token-test`, {
-        //     method: 'GET',
-
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Authorization': localStorage.getItem(
-        //             'Authentication-Token'
-        //         ),
-        //     },
-        // })
-        //     .then((data) => {
-        //         if (data.status == 'fail') {
-        //             // self.$router.push({ path: '/login' });
-        //         }
-        //         else {
-        //             this.lists_data = data.slice(1)
-        //             this.lists = data[0]['lists']
-        //             console.log(this.lists)
-        //         }
-
-        //     })
-        //     .catch((err) => {
-        //         //   alert(err.message)
-        //         console.log(err.message, err.status)
-
-        //     })
+        // Get the items from backend
+        this.getKarmas()
     },
-    
+
     methods: {
+        async getKarmas() {
+            const url = baseUrl + '/api/tasks'
+            const init_obj = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('Authentication-Token')
+                },
+            }
+
+            try {
+                const res = await fetch(url, init_obj)
+                if (!res.ok) {
+                    const errorData = await res.json()
+                    throw new Error(errorData.message || 'Error occurred')
+                }
+                const data = await res.json()
+                console.log('Success:', data)
+                this.karmas = data
+                this.filterItems()
+            } catch (error) {
+                console.error('Error:', error.message)
+                // handle error (e.g., show an error message)
+            }
+        },
+
+        async editKarma(id, list) {
+            const karma = this.karmas.find(karma => karma.id == id)
+            const url = baseUrl + '/api/tasks/' + id
+            const init_obj = {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + localStorage.getItem('Authentication-Token')
+                },
+                body: JSON.stringify({...karma,"review": list})
+            }
+
+            try {
+                const res = await fetch(url, init_obj)
+                if (!res.ok) {
+                    const errorData = await res.json()
+                    throw new Error(errorData.message || 'Error occurred')
+                }
+                const data = await res.json()
+                console.log('Success:', data)
+                this.showToast()
+            } catch (error) {
+                console.error('Error:', error.message)
+                this.errorToast()
+                // handle error (e.g., show an error message)
+            }
+
+        },
         showToast() {
             const toastEl = document.getElementById('liveToast')
             const toast = new Toast(toastEl)
             toast.show()
         },
+        errorToast() {
+            const toastEl = document.getElementById('liveToastError')
+            const toast = new Toast(toastEl)
+            toast.show()
+        },
+
         getImgUrl(pet) {
             var images = require.context('../assets/', false, /\.png$/)
             return images('../assets/' + pet + ".svg")
         },
-        filterItems () {
-            this.todos = this.karmas.filter(karma => karma.status === 'todo')
-            this.satisfied = this.karmas.filter(karma => karma.status === 'satisfied')
-            this.unsatisfied = this.karmas.filter(karma => karma.status === 'unsatisfied')
+        filterItems() {
+            this.todos = this.karmas.filter(karma => karma.review === 'pe')
+            this.satisfied = this.karmas.filter(karma => karma.review === 'sa')
+            this.unsatisfied = this.karmas.filter(karma => karma.review === 'us')
 
             this.karmas.forEach(karma => {
                 karma.src = karma.type
             })
 
         },
-        startDrag (event, id){
+        startDrag(event, id) {
             event.dataTransfer.dropEffect = 'move'
             event.dataTransfer.effectAllowed = 'move'
             event.dataTransfer.setData('itemID', id)
-            console.log("card_id",id)            
+            console.log("card_id", id)
         },
 
         onDrop(event, list) {
             const itemID = event.dataTransfer.getData('itemID')
-            const item = this.karmas.find((karma) => karma.id == itemID)            
-            item.status = list
+            const item = this.karmas.find((karma) => karma.id == itemID)
+            item.review = list
             this.filterItems()
-            this.showToast()
-            // event.target.appendChild(document.getElementById(itemID));                        
+            this.editKarma(itemID, list)            
+
         },
-        
     }
 }
 
 </script>
 
 <style scoped>
-    .type {
-        background-color: lightskyblue;
-    }
-    #satisfied {
-        background-color: lightgreen;
-    }
-    #unsatisfied {
-        background-color: lightcoral;
-    }
-    .btn {
-        float: right;
-    }
-</style>
+.type {
+    background-color: lightskyblue;
+}
 
+#satisfied {
+    background-color: lightgreen;
+}
+
+#unsatisfied {
+    background-color: lightcoral;
+}
+
+.btn {
+    float: right;
+}
+</style>
