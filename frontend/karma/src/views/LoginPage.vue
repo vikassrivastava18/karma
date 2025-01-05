@@ -39,8 +39,6 @@ export default {
     methods: {
         ...mapActions(['login']),
         async submit() {
-            console.log(this.formData);
-
             const url = 'http://127.0.0.1:8000/login'
             const init_obj = {
                 method: 'POST',

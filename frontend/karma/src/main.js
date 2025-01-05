@@ -6,8 +6,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 
 import { createApp } from 'vue'
 import App from './App.vue'
-import HomePage from './pages/HomPage.vue'
-import LoginPage from './pages/LoginPage.vue'
+import HomePage from './views/HomPage.vue'
+import LoginPage from './views/LoginPage.vue'
 
 const routes = [
   { path: '/', component: HomePage},

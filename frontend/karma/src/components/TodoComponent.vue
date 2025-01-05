@@ -1,12 +1,11 @@
 <template>
-    <div class="wrapper">
 
         <div class="container">
             <h2>
-                TODO
+                DAILY
                 <!-- Button trigger modal -->
                 <button type="button" class="btn px-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <img src="../assets/create.png" width="20" alt="create list">
+                    <!-- <img src="../assets/create.png" width="20" alt="create list"> -->
                 </button>
             </h2>
             <div class="cards-wrapper" :key="todo" @drop="onDrop($event, 'pe')" @dragenter.prevent @dragover.prevent>
@@ -63,56 +62,28 @@
             </div>
         </div>
 
-    </div>
-
-    <ToastComponent />
-
-    <ErrorToastComponent />
-
-    <ModalComponent />
 </template>
 
-
 <script>
-/* eslint-disable */
-// import CustomFetch from '@/CustomFetch';
-import { mapState } from 'vuex'
-import { Toast } from 'bootstrap'
-import ModalComponent from '../components/ModalComponent.vue';
-import ToastComponent from '../components/ToastComponent.vue';
-import ErrorToastComponent from '../components/ErrorToastComponent.vue';
-
 const baseUrl = 'http://localhost:8000';
 
 export default {
-    name: 'HomePage',
-    computed: {
-        ...mapState(['isAuthenticated']),
-    },
-    components: {
-        ModalComponent,
-        ToastComponent,
-        ErrorToastComponent
-    },
+    name: 'TodoComponent',
     data() {
         return {
             karmas: [],
             todos: [],
             satisfied: [],
             unsatisfied: []
-        }
+        };
     },
     mounted() {
-        // Check if the user is authenticated
-        console.log("Authenticated?", this.$store.state.isAuthenticated);
-
         if (!this.$store.state.isAuthenticated) {
             this.$router.push({ path: '/login' });
         }
         // Get the items from backend
         this.getKarmas()
     },
-
     methods: {
         async getKarmas() {
             const url = baseUrl + '/api/tasks'
@@ -131,7 +102,6 @@ export default {
                     throw new Error(errorData.message || 'Error occurred')
                 }
                 const data = await res.json()
-                console.log('Success:', data)
                 this.karmas = data
                 this.filterItems()
             } catch (error) {
@@ -158,31 +128,16 @@ export default {
                     const errorData = await res.json()
                     throw new Error(errorData.message || 'Error occurred')
                 }
-                const data = await res.json()
-                console.log('Success:', data)
-                this.showToast()
+                await res.json()
+                this.$emit('showToast')
             } catch (error) {
                 console.error('Error:', error.message)
-                this.errorToast()
+                this.$emit('errorToast')
                 // handle error (e.g., show an error message)
             }
 
         },
-        showToast() {
-            const toastEl = document.getElementById('liveToast')
-            const toast = new Toast(toastEl)
-            toast.show()
-        },
-        errorToast() {
-            const toastEl = document.getElementById('liveToastError')
-            const toast = new Toast(toastEl)
-            toast.show()
-        },
 
-        getImgUrl(pet) {
-            var images = require.context('../assets/', false, /\.png$/)
-            return images('../assets/' + pet + ".svg")
-        },
         filterItems() {
             this.todos = this.karmas.filter(karma => karma.review === 'pe')
             this.satisfied = this.karmas.filter(karma => karma.review === 'sa')
@@ -191,8 +146,8 @@ export default {
             this.karmas.forEach(karma => {
                 karma.src = karma.type
             })
-
         },
+
         startDrag(event, id) {
             event.dataTransfer.dropEffect = 'move'
             event.dataTransfer.effectAllowed = 'move'
@@ -206,27 +161,26 @@ export default {
             item.review = list
             this.filterItems()
             this.editKarma(itemID, list)            
-
-        },
+        },        
     }
-}
-
+};
 </script>
 
 <style scoped>
+.daily-component {
+    text-align: center;
+    margin: 20px;
+}
+
 .type {
-    background-color: lightskyblue;
-}
+        background-color: lightskyblue;
+    }
 
-#satisfied {
-    background-color: lightgreen;
-}
+    #satisfied {
+        background-color: lightgreen;
+    }
 
-#unsatisfied {
-    background-color: lightcoral;
-}
-
-.btn {
-    float: right;
-}
+    #unsatisfied {
+        background-color: lightcoral;
+    }
 </style>

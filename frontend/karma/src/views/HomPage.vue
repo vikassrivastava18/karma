@@ -1,0 +1,74 @@
+<template>
+
+    <DailyComponent @showToast="showToastPopup" @errorToast="errorToast" />
+    
+    <ToastComponent />
+
+    <ErrorToastComponent />    
+    <ModalComponent />
+</template>
+
+<script>
+/* eslint-disable */
+// import CustomFetch from '@/CustomFetch';
+import { mapState } from 'vuex'
+import { Toast } from 'bootstrap'
+
+import DailyComponent from '../components/DailyComponent.vue';
+import TodoComponent from '../components/TodoComponent.vue';
+import ModalComponent from '../components/ModalComponent.vue';
+import ToastComponent from '../components/ToastComponent.vue';
+import ErrorToastComponent from '../components/ErrorToastComponent.vue';
+
+export default {
+    name: 'HomePage',
+    computed: {
+        ...mapState(['isAuthenticated']),
+    },
+    components: {
+        DailyComponent,
+        TodoComponent,
+        ModalComponent,
+        ToastComponent,
+        ErrorToastComponent,        
+    },
+    data() {
+        return {
+        }
+    },
+    mounted() {
+        // Check if the user is authenticated
+        if (!this.$store.state.isAuthenticated) {
+            this.$router.push({ path: '/login' });
+        }       
+    },
+
+    methods: {
+        showToastPopup() {
+            console.log('Shhowing toast');
+            
+            const toastEl = document.getElementById('liveToast')
+            const toast = new Toast(toastEl)
+            toast.show()
+        },
+
+        errorToast() {
+            const toastEl = document.getElementById('liveToastError')
+            const toast = new Toast(toastEl)
+            toast.show()
+        },
+
+        getImgUrl(pet) {
+            var images = require.context('../assets/', false, /\.png$/)
+            return images('../assets/' + pet + ".svg")
+        },
+    }
+}
+
+</script>
+
+<style scoped>
+    .btn {
+        float: right;
+    }
+</style>
