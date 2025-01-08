@@ -32,76 +32,18 @@ h1 {
     margin-block: 0 10px;
 }
 
-body {
+html, main, body {
     margin: 0px;
+    width: 100vw;
 }
 
 main {
     margin: 0;
     padding: 0px;
-    height: 100vh;
+    padding-bottom: 30px;
+    /* min-height: 100vh; */
     background-color: #8EC5FC;
     background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.wrapper {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 10px;
-}
-
-.container {
-    background: #dee8ff;
-    border-radius: 10px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    max-height: 70vh;
-}
-
-.cards-wrapper {
-    scrollbar-width: thin;
-    padding-inline: 10px;
-    padding-top: 10px;
-    max-height: calc(100vh - 100px);
-    min-width: 328px;
-    border-radius: 10px;
-    overflow-y: scroll;
-    min-height: 100px;
-    flex-grow: 1;
-    transition: 0.3s;
-}
-
-.card-placeable {
-    background: #0000000d;
-}
-
-card {
-    padding: 10px;
-    width: 300px;
-    margin-bottom: 10px;
-    background: white;
-    border-radius: 10px;
-    overflow-y: hidden;
-    filter: drop-shadow(0 2px 7px #00000040);
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
-}
-
-.type {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding-block: 5px;
-    gap: 5px;
-    margin: -10px;
-    margin-bottom: 10px;
 }
 
 .icon {
@@ -138,7 +80,7 @@ header {
     position: absolute;
     top: 10px;
     text-align: left;
-    width: 100vw;
+    width: 98vw;
 }
 
 header h1 {

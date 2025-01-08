@@ -54,7 +54,7 @@ class Karma(models.Model):
         return self.get_review_display()
     
     def __str__(self):
-        return f"Task: {self.karma}, Review: {self.review}"
+        return f"{self.get_review_display_name()}, {self.karma}"
     
 
 class DayReview(models.Model):
@@ -73,6 +73,7 @@ class TodoStatus(models.TextChoices):
     PROGRESS = "pr", _("Progress")
     COMPLETE = "co", _("Complete")
 
+
 class Todo(models.Model):
     """
         Represents tasks with todo, in-progress, complete status
@@ -90,4 +91,22 @@ class Todo(models.Model):
     )
     created_on = models.DateField(auto_now=True)
     deadline = models.DateField()
+
+    def get_todo_type_display_name(self):
+        return self.get_todo_type_display()
+
+    def __str__(self):
+        return f"{self.get_todo_type_display_name()}, {self.todo}"
+    
+
+class Reflection(models.Model):
+    """
+        Add reflection for the day
+    """
+    reflection = models.TextField()
+    date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Reflection: {self.reflection:20}"
+ 
 

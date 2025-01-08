@@ -1,12 +1,12 @@
 <template>
 
     <DailyComponent @showToast="showToastPopup" @errorToast="errorToast" />
-    
+    <TodoComponent @showToast="showToastPopup" @errorToast="errorToast" />
     <ToastComponent />
 
     <ErrorToastComponent />    
     <ModalComponent />
-</template>
+</template> 
 
 <script>
 /* eslint-disable */
@@ -45,8 +45,6 @@ export default {
 
     methods: {
         showToastPopup() {
-            console.log('Shhowing toast');
-            
             const toastEl = document.getElementById('liveToast')
             const toast = new Toast(toastEl)
             toast.show()
@@ -68,6 +66,7 @@ export default {
 </script>
 
 <style scoped>
+    
     .btn {
         float: right;
     }

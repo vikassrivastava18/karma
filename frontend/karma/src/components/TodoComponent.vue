@@ -1,67 +1,63 @@
 <template>
-
-        <div class="container">
+    <div class="wrapper2">
+        
+        <div class="container fixed-size" id="todo">
             <h2>
-                DAILY
+                TODO
                 <!-- Button trigger modal -->
                 <button type="button" class="btn px-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <!-- <img src="../assets/create.png" width="20" alt="create list"> -->
+                    <img src="../assets/create.png" width="20" alt="create list">
                 </button>
             </h2>
-            <div class="cards-wrapper" :key="todo" @drop="onDrop($event, 'pe')" @dragenter.prevent @dragover.prevent>
+            <div class="cards-wrapper" :key="todo" 
+                @drop="onDrop($event, 'to')" 
+                @dragenter.prevent @dragover.prevent>
                 <card v-for="karma of todos" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
 
-                    <span class="title">
-                        {{ karma.title }}
+                    <span class="">
+                        {{ karma.todo }}
                     </span>
-
-                    <span class="content" v-html="karma.karma">
-
-                    </span>
-
                 </card>
             </div>
         </div>
 
-        <div class="container" id="satisfied">
+        <div class="container fixed-size" id="inProgress">
             <h2>
-                SATISFIED
+                IN-PROGRESS
             </h2>
-            <div class="cards-wrapper" :key="satisfied" @drop="onDrop($event, 'sa')" @dragenter.prevent
+            <div class="cards-wrapper" :key="inProgress" 
+                @drop="onDrop($event, 'pr')" @dragenter.prevent
                 @dragover.prevent>
-                <card v-for="karma of satisfied" :key="karma.id" :id="karma.id" class="card" draggable="true"
+                <card v-for="karma of inProgress" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
 
                     <span class="title">
-                        {{ karma.title }}
+                        {{ karma.todo }}
                     </span>
-                    <span class="content" v-html="karma.karma">
-                    </span>
-
                 </card>
             </div>
         </div>
 
-        <div class="container" id="unsatisfied">
+        <div class="container fixed-size" id="complete">
             <h2>
-                UNSATISFIED
+                COMPLETED
             </h2>
-            <div class="cards-wrapper" :key="unsatisfied" @drop="onDrop($event, 'us')" @dragenter.prevent
+            <div class="cards-wrapper" :key="complete"
+                @drop="onDrop($event, 'co')" @dragenter.prevent
                 @dragover.prevent>
-                <card v-for="karma of unsatisfied" :key="karma.id" :id="karma.id" class="card" draggable="true"
+                <card v-for="karma of complete" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
 
                     <span class="title">
-                        {{ karma.title }}
-                    </span>
-                    <span class="content" v-html="karma.karma">
+                        {{ karma.todo }}
                     </span>
 
                 </card>
             </div>
         </div>
 
+    </div>
 </template>
 
 <script>
@@ -71,10 +67,10 @@ export default {
     name: 'TodoComponent',
     data() {
         return {
-            karmas: [],
+            allData: [],
             todos: [],
-            satisfied: [],
-            unsatisfied: []
+            inProgress: [],
+            complete: []
         };
     },
     mounted() {
@@ -82,11 +78,11 @@ export default {
             this.$router.push({ path: '/login' });
         }
         // Get the items from backend
-        this.getKarmas()
+        this.getTodos()
     },
     methods: {
-        async getKarmas() {
-            const url = baseUrl + '/api/tasks'
+        async getTodos() {
+            const url = baseUrl + '/api/todos'
             const init_obj = {
                 method: 'GET',
                 headers: {
@@ -102,7 +98,9 @@ export default {
                     throw new Error(errorData.message || 'Error occurred')
                 }
                 const data = await res.json()
-                this.karmas = data
+                this.allData = data
+                console.log("allData", this.allData);
+                
                 this.filterItems()
             } catch (error) {
                 console.error('Error:', error.message)
@@ -111,8 +109,8 @@ export default {
         },
 
         async editKarma(id, list) {
-            const karma = this.karmas.find(karma => karma.id == id)
-            const url = baseUrl + '/api/tasks/' + id
+            const karma = this.allData.find(karma => karma.id == id)
+            const url = baseUrl + '/api/todos/' + id
             const init_obj = {
                 method: 'PUT',
                 headers: {
@@ -133,18 +131,17 @@ export default {
             } catch (error) {
                 console.error('Error:', error.message)
                 this.$emit('errorToast')
-                // handle error (e.g., show an error message)
             }
 
         },
 
         filterItems() {
-            this.todos = this.karmas.filter(karma => karma.review === 'pe')
-            this.satisfied = this.karmas.filter(karma => karma.review === 'sa')
-            this.unsatisfied = this.karmas.filter(karma => karma.review === 'us')
+            this.todos = this.allData.filter(karma => karma.status === 'to')
+            this.inProgress = this.allData.filter(karma => karma.status === 'pr')
+            this.complete = this.allData.filter(karma => karma.status === 'co')
 
-            this.karmas.forEach(karma => {
-                karma.src = karma.type
+            this.allData.forEach(todo => {
+                todo.src = todo.type
             })
         },
 
@@ -157,8 +154,8 @@ export default {
 
         onDrop(event, list) {
             const itemID = event.dataTransfer.getData('itemID')
-            const item = this.karmas.find((karma) => karma.id == itemID)
-            item.review = list
+            const item = this.allData.find(karma => karma.id == itemID)
+            item.status = list
             this.filterItems()
             this.editKarma(itemID, list)            
         },        
@@ -167,20 +164,92 @@ export default {
 </script>
 
 <style scoped>
+.wrapper2 {
+    padding: 30px;
+    max-height: 60vh;
+    max-width: 80vw;
+
+    /* margin-top: 20vh; */
+    display: flex;
+    margin: auto;
+    margin-top: 45vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    background: #dee8ff;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    max-height: 70vh;
+}
+
+.cards-wrapper {
+    scrollbar-width: thin;
+    padding-inline: 10px;
+    padding-top: 10px;
+    /* max-height: calc(100vh - 100px); */
+    min-width: 328px;
+    border-radius: 10px;
+    overflow-y: scroll;
+    min-height: 100px;
+    flex-grow: 1;
+    transition: 0.3s;
+}
+
+.card-placeable {
+    background: #0000000d;
+}
+
+.card {
+    padding: 10px;
+    /* width: 300px; */
+    margin-bottom: 20px;
+    background: white;
+    border-radius: 10px;
+    overflow-y: hidden;
+    filter: drop-shadow(0 2px 7px #00000040);
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.type {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-block: 5px;
+    gap: 5px;
+    margin: -10px;
+    margin-bottom: 10px;
+}
+
+
+.fixed-size {
+    /* margin-top: 80vh; */
+    padding: 20px;
+    width: 800px; /* Set your desired width */
+    height: 500px; /* Set your desired height */
+    overflow: auto; /* Add overflow if content exceeds the fixed size */
+}
 .daily-component {
     text-align: center;
     margin: 20px;
 }
 
-.type {
-        background-color: lightskyblue;
+#todo {
+        background-color: lightyellow;
     }
 
-    #satisfied {
+    #inProgress {
+        background-color: lightblue;
+    }
+
+    #complete {
         background-color: lightgreen;
-    }
-
-    #unsatisfied {
-        background-color: lightcoral;
     }
 </style>
