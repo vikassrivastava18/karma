@@ -4,8 +4,8 @@ from rest_framework.authentication import SessionAuthentication, TokenAuthentica
 from rest_framework import generics
 from rest_framework.response import Response
 
-from .models import Karma, Todo
-from .serializers import KarmaSerializer, TodoSerializer
+from .models import Karma, Todo, Reflection
+from .serializers import KarmaSerializer, ReflectionSerializer, TodoSerializer
 
 # Get today's date
 today = timezone.now().date()
@@ -60,4 +60,27 @@ class ToDoDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
     queryset = Todo.objects.all()
     serializer_class = TodoSerializer
+
+
+class ReflectionView(generics.ListCreateAPIView):
+    """
+        GET - Returns a list of all reflections
+        POST - Creates a new reflection
+    """
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    queryset = Reflection.objects.all()
+    serializer_class = ReflectionSerializer
+
+    def get(self, request, *args, **kwargs):
+        karmas = Reflection.objects.filter(date=today)
+        serializer = ReflectionSerializer(karmas, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request, *args, **kwargs):
+        serializer = ReflectionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
     

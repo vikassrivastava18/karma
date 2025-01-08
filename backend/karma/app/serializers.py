@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Karma, Todo
+from .models import Karma, Todo, Reflection
 
 
 class KarmaSerializer(serializers.ModelSerializer):
@@ -15,6 +15,11 @@ class KarmaSerializer(serializers.ModelSerializer):
 class TodoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Todo
+        fields = '__all__'
+
+class ReflectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reflection
         fields = '__all__'
 
 

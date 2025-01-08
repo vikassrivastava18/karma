@@ -2,8 +2,9 @@
 
     <DailyComponent @showToast="showToastPopup" @errorToast="errorToast" />
     <TodoComponent @showToast="showToastPopup" @errorToast="errorToast" />
-    <ToastComponent />
+    <ReflectionComponent @showToast="showToastPopup" @errorToast="errorToast" />
 
+    <ToastComponent />
     <ErrorToastComponent />    
     <ModalComponent />
 </template> 
@@ -16,6 +17,7 @@ import { Toast } from 'bootstrap'
 
 import DailyComponent from '../components/DailyComponent.vue';
 import TodoComponent from '../components/TodoComponent.vue';
+import ReflectionComponent from '../components/ReflectionComponent.vue';
 import ModalComponent from '../components/ModalComponent.vue';
 import ToastComponent from '../components/ToastComponent.vue';
 import ErrorToastComponent from '../components/ErrorToastComponent.vue';
@@ -28,6 +30,7 @@ export default {
     components: {
         DailyComponent,
         TodoComponent,
+        ReflectionComponent,
         ModalComponent,
         ToastComponent,
         ErrorToastComponent,        
@@ -65,8 +68,7 @@ export default {
 
 </script>
 
-<style scoped>
-    
+<style scoped>    
     .btn {
         float: right;
     }

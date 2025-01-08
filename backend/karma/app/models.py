@@ -107,6 +107,6 @@ class Reflection(models.Model):
     date = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return f"Reflection: {self.reflection:20}"
+        return f"{self.date}, Reflection: {self.reflection:20}"
  
 
