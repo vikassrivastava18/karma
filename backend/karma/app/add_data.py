@@ -70,4 +70,10 @@ def next_day_date(d):
     # Get the next date from now
     return timezone.now() + timedelta(days=d)
 
-
+for i in range(1, 8):
+    add_parayer_karma(next_day_date(i))
+    add_study_karma(next_day_date(i))
+    add_work_karma(next_day_date(i))
+    add_family_karma(next_day_date(i))
+    add_play_karma(next_day_date(i))
+    add_public_karma(next_day_date(i))

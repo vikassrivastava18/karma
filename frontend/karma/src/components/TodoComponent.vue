@@ -14,7 +14,6 @@
                 @dragenter.prevent @dragover.prevent>
                 <card v-for="karma of todos" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
-
                     <span class="">
                         {{ karma.todo }}
                     </span>
@@ -74,9 +73,6 @@ export default {
         };
     },
     mounted() {
-        if (!this.$store.state.isAuthenticated) {
-            this.$router.push({ path: '/login' });
-        }
         // Get the items from backend
         this.getTodos()
     },
@@ -90,7 +86,6 @@ export default {
                     'Authorization': 'Token ' + localStorage.getItem('Authentication-Token')
                 },
             }
-
             try {
                 const res = await fetch(url, init_obj)
                 if (!res.ok) {

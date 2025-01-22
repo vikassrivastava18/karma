@@ -1,6 +1,8 @@
 from django.urls import path
 
-from .views import KarmaListView, KarmaDetailView, ToDoListView, ToDoDetailView, ReflectionView
+from .views import (KarmaListView, KarmaDetailView, 
+                    ToDoListView, ToDoDetailView, 
+                    ReflectionView)
 
 urlpatterns = [
     path('tasks', KarmaListView.as_view(), name='tasks'),
