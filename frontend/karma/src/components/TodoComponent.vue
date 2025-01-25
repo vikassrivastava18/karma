@@ -16,6 +16,7 @@
                     @dragstart="startDrag($event, karma.id)">
                     <span class="">
                         {{ karma.todo }}
+                        <IconComponent :karmaType="karma.type" />
                     </span>
                 </card>
             </div>
@@ -60,10 +61,15 @@
 </template>
 
 <script>
+import IconComponent from './IconComponent.vue';
+
 const baseUrl = 'http://localhost:8000';
 
 export default {
     name: 'TodoComponent',
+    components: {
+        IconComponent
+    },
     data() {
         return {
             allData: [],

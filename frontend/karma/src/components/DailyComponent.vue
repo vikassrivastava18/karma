@@ -16,6 +16,8 @@
 
                     <span class="title">
                         {{ karma.title }}
+                        <IconComponent :karmaType="karma.type" />
+
                     </span>
 
                     <span class="content" v-html="karma.karma">
@@ -37,6 +39,7 @@
 
                     <span class="title">
                         {{ karma.title }}
+                        <IconComponent :karmaType="karma.type" />
                     </span>
                     <span class="content" v-html="karma.karma">
                     </span>
@@ -56,6 +59,7 @@
 
                     <span class="title">
                         {{ karma.title }}
+                        <IconComponent :karmaType="karma.type" />
                     </span>
                     <span class="content" v-html="karma.karma">
                     </span>
@@ -69,9 +73,14 @@
 
 <script>
 const baseUrl = 'http://localhost:8000';
+import IconComponent from './IconComponent.vue';
+
 
 export default {
     name: 'DailyComponent',
+    components: {
+        IconComponent
+    },
     data() {
         return {
             karmas: [],
@@ -106,6 +115,8 @@ export default {
                 }
                 const data = await res.json()
                 this.karmas = data
+                console.log(data);
+                
                 this.filterItems()
             } catch (error) {
                 console.error('Error:', error.message)

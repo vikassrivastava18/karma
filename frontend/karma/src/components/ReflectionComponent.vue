@@ -36,10 +36,11 @@ export default {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                const data = await response.json();
-                console.log('Reflection submitted successfully:', data);
+                await response.json();
+                this.$emit('showToast')
                 this.reflection = '';
             } catch (error) {
+                this.$emit('errorToast')
                 console.error('There was a problem with the submission:', error);
             }
         }
