@@ -84,7 +84,7 @@ export default {
 }
 
 form {
-    width: 50%;
+    width: 66%;
     margin: auto;
     padding: 20px;
     background: #dee8ff;

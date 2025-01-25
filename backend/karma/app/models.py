@@ -54,7 +54,7 @@ class Karma(models.Model):
         return self.get_review_display()
     
     def __str__(self):
-        return f"{self.get_review_display_name()}, {self.karma}"
+        return f"{self.get_review_display_name()}, {self.karma:20}, {self.date}"
     
 
 class DayReview(models.Model):

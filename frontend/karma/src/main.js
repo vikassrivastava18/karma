@@ -24,5 +24,3 @@ createApp(App)
 .use(store)
 .mount('#app')
 
-// filepath: /c:/Users/vikas/OneDrive/Desktop/karma/frontend/karma/src/main.js
-

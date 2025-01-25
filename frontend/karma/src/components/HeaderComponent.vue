@@ -11,7 +11,7 @@
                 </div>
                 <div class="text-end" v-else>
                     <button type="button" class="btn btn-outline-dark me-2">Login</button>
-                    <button type="button" class="btn btn-warning">Sign-up</button>
+                    <!-- <button type="button" class="btn btn-warning">Sign-up</button> -->
                 </div>
             </div>
         </div>

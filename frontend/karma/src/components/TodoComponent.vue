@@ -16,7 +16,7 @@
                     @dragstart="startDrag($event, karma.id)">
                     <span class="">
                         {{ karma.todo }}
-                        <IconComponent :karmaType="karma.type" />
+                        <IconComponent :karmaType="karma.todo_type" />
                     </span>
                 </card>
             </div>
@@ -31,9 +31,9 @@
                 @dragover.prevent>
                 <card v-for="karma of inProgress" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
-
-                    <span class="title">
+                    <span class="">
                         {{ karma.todo }}
+                        <IconComponent :karmaType="karma.todo_type" />
                     </span>
                 </card>
             </div>
@@ -49,8 +49,9 @@
                 <card v-for="karma of complete" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
 
-                    <span class="title">
-                        {{ karma.todo }}
+                    <span class="">
+                        {{ karma.todo }} {{ karma.todo_type }}
+                        <IconComponent :karmaType="karma.todo_type" />
                     </span>
 
                 </card>
@@ -58,17 +59,22 @@
         </div>
 
     </div>
+
+    <ModalComponent @refreshTodoData="getTodos" 
+    @showToast="this.$emit('showToast')" />
 </template>
 
 <script>
 import IconComponent from './IconComponent.vue';
+import ModalComponent from './ModalComponent.vue';
 
 const baseUrl = 'http://localhost:8000';
 
 export default {
     name: 'TodoComponent',
     components: {
-        IconComponent
+        IconComponent,
+        ModalComponent
     },
     data() {
         return {

@@ -1,7 +1,6 @@
 <template>
-
     <div class="wrapper">
-
+        
         <div class="container fixed-size" id="karma">
             <h2>
                 DAILY
