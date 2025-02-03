@@ -1,4 +1,4 @@
-from datetime import timedelta, timezone
+from datetime import timedelta
 
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone

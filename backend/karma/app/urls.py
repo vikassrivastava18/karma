@@ -2,9 +2,10 @@ from django.urls import path
 
 from .views import (KarmaListView, KarmaDetailView, 
                     ToDoListView, ToDoDetailView, 
-                    ReflectionView)
+                    ReflectionView, HomeView)
 
 urlpatterns = [
+    path('', HomeView.as_view(), name='home'),
     path('tasks', KarmaListView.as_view(), name='tasks'),
     path('tasks/<int:pk>', KarmaDetailView.as_view(), name='task'),
     path('todos', ToDoListView.as_view(), name='todos'),

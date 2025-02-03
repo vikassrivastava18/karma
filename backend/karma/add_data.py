@@ -1,4 +1,7 @@
-from app.models import *
+from django.utils import timezone
+from datetime import timedelta
+
+from app.models import Karma, KarmaType, KarmaReview
 
 def add_parayer_karma(date):
     karma = Karma(
@@ -68,7 +71,7 @@ def add_public_karma(date):
 
 def next_day_date(d):
     # Get the next date from now
-    return timezone.now() + timedelta(days=d)
+    return timezone.now().date() + timedelta(days=d)
 
 for i in range(1, 100):
     add_parayer_karma(next_day_date(i))

@@ -1,72 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
+{% load static %}
+<!doctype html>
+<html lang="">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" href="/favicon.ico">
     <title>KARMA</title>
 
-    <link rel="stylesheet" href="main.css">
+    <script src="{% static 'js/chunk-vendors.ab45d039.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/chunk-vendors.4158d80c.css' %}">
+    <link rel="stylesheet" href="{% static 'css/app.eea14667.css' %}">
 </head>
 
-<body>
-    <header>
-        <h1>KARMA</h1>
-    </header>
-    <main>
-        <div class="wrapper">
-
-            <div class="container">
-                <h2>
-                    KARMA
-                </h2>
-                <div class="cards-wrapper" id="todo" ondragover="dragoverHandler(event)">
-                    <card draggable="true" id="0" ondragstart="dragstartHandler(event)"
-                        ondragend="dragendHandler(event)">
-                        <div class="type" style="background: #7bed9f;">
-                            <img class="icon" src="https://www.svgrepo.com/show/533406/book.svg">
-                            <span class="type-text">
-                                Prayer
-                            </span>
-                        </div>
-                        <span class="title">
-                            Test Story
-                        </span>
-                        <span class="content">
-                            This is test content of a story. Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-                            sed
-                            diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-                        </span>
-                        <div class="user-prio-wrapper">
-                            <span class="user">
-                                GlitchDev
-                            </span>
-                            <img class="icon" src="https://www.svgrepo.com/show/469842/sort-descending.svg">
-                        </div>
-                    </card>
-
-                </div>
-            </div>
-
-            <div class="container">
-                <h2>
-                    SATISFIED
-                </h2>
-                <div class="cards-wrapper" id="done" ondragover="dragoverHandler(event)">
-                </div>
-            </div>
-
-            <div class="container">
-                <h2>
-                    UNSATISFIED
-                </h2>
-                <div class="cards-wrapper" id="approved" ondragover="dragoverHandler(event)">
-                </div>
-            </div>
-
-        </div>
-    </main>
+<body><noscript><strong>We're sorry but karma doesn't work properly without JavaScript enabled. Please enable it to
+            continue.</strong></noscript>
+    <div id="app"></div>
+    
 </body>
-<script src="main.js"></script>
 
+<script src="{% static 'js/app.797b52a3.js' %}"></script>
 </html>

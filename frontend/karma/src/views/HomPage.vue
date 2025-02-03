@@ -1,8 +1,9 @@
 <template>
     <DailyComponent @showToast="showToastPopup" @errorToast="errorToast" />
-    <TodoComponent @showToast="showToastPopup" @errorToast="errorToast" />
-    <ReflectionComponent @showToast="showToastPopup" @errorToast="errorToast" />
     
+    <TodoComponent @showToast="showToastPopup" @errorToast="errorToast" />
+    
+    <ReflectionComponent @showToast="showToastPopup" @errorToast="errorToast" />    
 
     <ToastComponent />
     <ErrorToastComponent />    

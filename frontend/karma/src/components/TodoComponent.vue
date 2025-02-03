@@ -1,17 +1,15 @@
 <template>
     <div class="wrapper2">
-        
+
         <div class="container fixed-size" id="todo">
             <h2>
                 TODO
                 <!-- Button trigger modal -->
                 <button type="button" class="btn px-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <img src="../assets/create.png" width="20" alt="create list">
+                    <img src="../assets/create.png" width="20" alt="create list" id="addItemBtn">
                 </button>
             </h2>
-            <div class="cards-wrapper" :key="todo" 
-                @drop="onDrop($event, 'to')" 
-                @dragenter.prevent @dragover.prevent>
+            <div class="cards-wrapper" :key="todo" @drop="onDrop($event, 'to')" @dragenter.prevent @dragover.prevent>
                 <card v-for="karma of todos" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
                     <span class="">
@@ -26,8 +24,7 @@
             <h2>
                 IN-PROGRESS
             </h2>
-            <div class="cards-wrapper" :key="inProgress" 
-                @drop="onDrop($event, 'pr')" @dragenter.prevent
+            <div class="cards-wrapper" :key="inProgress" @drop="onDrop($event, 'pr')" @dragenter.prevent
                 @dragover.prevent>
                 <card v-for="karma of inProgress" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
@@ -43,8 +40,7 @@
             <h2>
                 COMPLETED
             </h2>
-            <div class="cards-wrapper" :key="complete"
-                @drop="onDrop($event, 'co')" @dragenter.prevent
+            <div class="cards-wrapper" :key="complete" @drop="onDrop($event, 'co')" @dragenter.prevent
                 @dragover.prevent>
                 <card v-for="karma of complete" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
@@ -60,15 +56,67 @@
 
     </div>
 
-    <ModalComponent @refreshTodoData="getTodos" 
-    @showToast="this.$emit('showToast')" />
+    <ModalComponent @refreshTodoData="getTodos" @showToast="this.$emit('showToast')" />
 </template>
 
 <script>
+/* eslint-disable */
 import IconComponent from './IconComponent.vue';
 import ModalComponent from './ModalComponent.vue';
 
 const baseUrl = 'http://localhost:8000';
+let data = [
+    {
+        "id": 1,
+        "todo": "Finish first CS50 assignment",
+        "todo_type": "st",
+        "status": "co",
+        "created_on": "2025-01-25",
+        "deadline": "2025-01-10"
+    },
+    {
+        "id": 2,
+        "todo": "Do some DSA",
+        "todo_type": "st",
+        "status": "pr",
+        "created_on": "2025-02-03",
+        "deadline": "2025-01-29"
+    },
+    {
+        "id": 3,
+        "todo": "Do some DSA",
+        "todo_type": "st",
+        "status": "pr",
+        "created_on": "2025-01-25",
+        "deadline": "2025-01-30"
+    },
+    {
+        "id": 4,
+        "todo": "Learn some Python skills",
+        "todo_type": "st",
+        "status": "co",
+        "created_on": "2025-01-26",
+        "deadline": "2025-01-27"
+    },
+    {
+        "id": 5,
+        "todo": "Do something",
+        "todo_type": "st",
+        "status": "to",
+        "created_on": "2025-01-25",
+        "deadline": "2025-01-29"
+    },
+    {
+        "id": 6,
+        "todo": "Play 20 matches by 31",
+        "todo_type": "pl",
+        "status": "co",
+        "created_on": "2025-02-03",
+        "deadline": "2025-01-31"
+    }
+]
+
+
 
 export default {
     name: 'TodoComponent',
@@ -78,7 +126,7 @@ export default {
     },
     data() {
         return {
-            allData: [],
+            AllTasks: [],
             todos: [],
             inProgress: [],
             complete: []
@@ -86,7 +134,9 @@ export default {
     },
     mounted() {
         // Get the items from backend
-        this.getTodos()
+        this.AllTasks = data
+        this.filterItems()
+        // this.getTodos()
     },
     methods: {
         async getTodos() {
@@ -105,9 +155,9 @@ export default {
                     throw new Error(errorData.message || 'Error occurred')
                 }
                 const data = await res.json()
-                this.allData = data
-                console.log("allData", this.allData);
-                
+                this.AllTasks = data
+                console.log("Todos", this.AllTasks);
+
                 this.filterItems()
             } catch (error) {
                 console.error('Error:', error.message)
@@ -116,7 +166,10 @@ export default {
         },
 
         async editKarma(id, list) {
-            const karma = this.allData.find(karma => karma.id == id)
+            this.$emit('showToast')
+            return
+            // Modify for API
+            const karma = this.AllTasks.find(karma => karma.id == id)
             const url = baseUrl + '/api/todos/' + id
             const init_obj = {
                 method: 'PUT',
@@ -124,9 +177,8 @@ export default {
                     'Content-Type': 'application/json',
                     'Authorization': 'Token ' + localStorage.getItem('Authentication-Token')
                 },
-                body: JSON.stringify({...karma,"review": list})
+                body: JSON.stringify({ ...karma, "review": list })
             }
-
             try {
                 const res = await fetch(url, init_obj)
                 if (!res.ok) {
@@ -143,11 +195,11 @@ export default {
         },
 
         filterItems() {
-            this.todos = this.allData.filter(karma => karma.status === 'to')
-            this.inProgress = this.allData.filter(karma => karma.status === 'pr')
-            this.complete = this.allData.filter(karma => karma.status === 'co')
+            this.todos = this.AllTasks.filter(karma => karma.status === 'to')
+            this.inProgress = this.AllTasks.filter(karma => karma.status === 'pr')
+            this.complete = this.AllTasks.filter(karma => karma.status === 'co')
 
-            this.allData.forEach(todo => {
+            this.AllTasks.forEach(todo => {
                 todo.src = todo.type
             })
         },
@@ -161,11 +213,11 @@ export default {
 
         onDrop(event, list) {
             const itemID = event.dataTransfer.getData('itemID')
-            const item = this.allData.find(karma => karma.id == itemID)
+            const item = this.AllTasks.find(karma => karma.id == itemID)
             item.status = list
             this.filterItems()
-            this.editKarma(itemID, list)            
-        },        
+            this.editKarma(itemID, list)
+        },
     }
 };
 </script>
@@ -239,24 +291,28 @@ export default {
 .fixed-size {
     /* margin-top: 80vh; */
     padding: 20px;
-    width: 800px; /* Set your desired width */
-    height: 500px; /* Set your desired height */
-    overflow: auto; /* Add overflow if content exceeds the fixed size */
+    width: 800px;
+    /* Set your desired width */
+    height: 500px;
+    /* Set your desired height */
+    overflow: auto;
+    /* Add overflow if content exceeds the fixed size */
 }
+
 .daily-component {
     text-align: center;
     margin: 20px;
 }
 
 #todo {
-        background-color: lightyellow;
-    }
+    background-color: lightyellow;
+}
 
-    #inProgress {
-        background-color: lightblue;
-    }
+#inProgress {
+    background-color: lightblue;
+}
 
-    #complete {
-        background-color: lightgreen;
-    }
+#complete {
+    background-color: lightgreen;
+}
 </style>

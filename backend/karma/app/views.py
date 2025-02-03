@@ -1,4 +1,7 @@
+from django.shortcuts import render
 from django.utils import timezone
+from datetime import timedelta
+
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework import generics
@@ -8,7 +11,14 @@ from .models import Karma, Todo, Reflection
 from .serializers import KarmaSerializer, ReflectionSerializer, TodoSerializer
 
 # Get today's date
-today = timezone.now().date()
+today = timezone.now().date() + timedelta(days=1)
+
+class HomeView(generics.GenericAPIView):
+    """
+        GET - Returns a welcome message
+    """
+    def get(self, request):
+        return render(request, 'index.html')
 
 
 class KarmaListView(generics.ListCreateAPIView):
@@ -21,10 +31,11 @@ class KarmaListView(generics.ListCreateAPIView):
     queryset = Karma.objects.all()
     serializer_class = KarmaSerializer
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         karmas = Karma.objects.filter(date=today)
         serializer = KarmaSerializer(karmas, many=True)
         return Response(serializer.data)
+
 
 class KarmaDetailView(generics.RetrieveUpdateDestroyAPIView):
     

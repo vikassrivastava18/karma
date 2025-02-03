@@ -6,7 +6,6 @@
                 DAILY
                 <!-- Button trigger modal -->
                 <button type="button" class="btn px-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <!-- <img src="../assets/create.png" width="20" alt="create list"> -->
                 </button>
             </h2>
             <div class="cards-wrapper" :key="todo" @drop="onDrop($event, 'pe')" @dragenter.prevent @dragover.prevent>
@@ -16,7 +15,6 @@
                     <span class="title">
                         {{ karma.title }}
                         <IconComponent :karmaType="karma.type" />
-
                     </span>
 
                     <span class="content" v-html="karma.karma">
@@ -71,8 +69,67 @@
 </template>
 
 <script>
+/*eslint-disable */
+
 const baseUrl = 'http://localhost:8000';
 import IconComponent from './IconComponent.vue';
+
+let data = [
+    {
+        "id": 2562,
+        "title": "Daily Puja",
+        "karma": "<p><b>Mandatory</b> after bath.<br> Do with <b>bhava</b></p>",
+        "date": "2025-02-04",
+        "type": "pr",
+        "review": "sa",
+        "src": "pr"
+    },
+    {
+        "id": 2563,
+        "title": "Daily Study",
+        "karma": "<p>Study for 2 hour.<br>Go <b>Deep</b></p>",
+        "date": "2025-02-04",
+        "type": "st",
+        "review": "sa",
+        "src": "st"
+    },
+    {
+        "id": 2564,
+        "title": "Daily Work",
+        "karma": "<p>Work with passion, sincerity. <br><b>Daily</b> </p>",
+        "date": "2025-02-04",
+        "type": "wo",
+        "review": "us",
+        "src": "wo"
+    },
+    {
+        "id": 2565,
+        "title": "Family Time",
+        "karma": "<p>Spend time with family.<br>Do with <b>love</b></p>",
+        "date": "2025-02-04",
+        "type": "ho",
+        "review": "pe",
+        "src": "ho"
+    },
+    {
+        "id": 2566,
+        "title": "Play Time",
+        "karma": "<p>Play with friends/chess<br>Do with <b>focus</b></p>",
+        "date": "2025-02-04",
+        "type": "pl",
+        "review": "pe",
+        "src": "pl"
+    },
+    {
+        "id": 2567,
+        "title": "Public Life",
+        "karma": "<p><b>Interaction</b> and relationships.<br> Do with <b>love</b></p>",
+        "date": "2025-02-04",
+        "type": "pu",
+        "review": "pe",
+        "src": "pu"
+    }
+]
 
 
 export default {
@@ -97,6 +154,10 @@ export default {
     },
     methods: {
         async getKarmas() {
+            this.karmas = data
+            this.filterItems()
+            return
+            // Modiify for API
             const url = baseUrl + '/api/tasks'
             const init_obj = {
                 method: 'GET',
@@ -114,7 +175,7 @@ export default {
                 }
                 const data = await res.json()
                 this.karmas = data
-                console.log(data);
+                console.log("Daily", data);
                 
                 this.filterItems()
             } catch (error) {
@@ -124,6 +185,9 @@ export default {
         },
 
         async editKarma(id, list) {
+            this.$emit('showToast')
+            return
+            // Modify for API
             const karma = this.karmas.find(karma => karma.id == id)
             const url = baseUrl + '/api/tasks/' + id
             const init_obj = {

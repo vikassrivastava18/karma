@@ -3,7 +3,6 @@
         <h2>Daily Reflection</h2>
         <form @submit.prevent="submitReflection">
             <div class="form-group">
-                <label for="reflection" class="form-label">Reflection:</label>
                 <textarea id="reflection" v-model="reflection" class="form-control" required></textarea>
             </div>
             <button type="submit">Submit</button>
@@ -12,7 +11,7 @@
 </template>
 
 <script>
-
+/* eslint-disable */
 const baseUrl = 'http://localhost:8000';
 export default {
     name: 'RelectionComponent',
@@ -23,6 +22,10 @@ export default {
     },
     methods: {
         async submitReflection() {
+            this.$emit('showToast')
+            this.reflection = '';
+            return
+            // Make API call to submit the reflection
             try {
                 const url = baseUrl + '/api/reflections'
                 const response = await fetch(url, {
