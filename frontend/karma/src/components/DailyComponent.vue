@@ -146,9 +146,9 @@ export default {
         };
     },
     mounted() {
-        if (!this.$store.state.isAuthenticated) {
-            this.$router.push({ path: '/login' });
-        }
+        // if (!this.$store.state.isAuthenticated) {
+        //     this.$router.push({ path: '/login' });
+        // }
         // Get the items from backend
         this.getKarmas()
     },

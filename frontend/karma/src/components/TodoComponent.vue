@@ -116,8 +116,6 @@ let data = [
     }
 ]
 
-
-
 export default {
     name: 'TodoComponent',
     components: {
@@ -156,7 +154,6 @@ export default {
                 }
                 const data = await res.json()
                 this.AllTasks = data
-                console.log("Todos", this.AllTasks);
 
                 this.filterItems()
             } catch (error) {

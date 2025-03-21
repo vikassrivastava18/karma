@@ -13,6 +13,7 @@ from .serializers import KarmaSerializer, ReflectionSerializer, TodoSerializer
 # Get today's date
 today = timezone.now().date() + timedelta(days=1)
 
+
 class HomeView(generics.GenericAPIView):
     """
         GET - Returns a welcome message

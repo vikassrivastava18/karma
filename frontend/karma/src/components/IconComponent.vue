@@ -7,8 +7,6 @@
     <img v-if="karmaType === 'pu'" src="../assets/public.svg" alt="" width="25">
     <img v-if="karmaType === 'ho'" src="https://www.svgrepo.com/show/483728/family.svg" alt="" width="25">
 
-
-
 </template>
 
 <script>

@@ -37,8 +37,11 @@ export default {
         }
     },
     methods: {
-        ...mapActions(['login']),
+        // ...mapActions(['login']),
+        
         async submit() {
+            this.$router.push({ path: '/' })
+            
             const url = 'http://127.0.0.1:8000/login'
             const init_obj = {
                 method: 'POST',
