@@ -1,4 +1,5 @@
 <template>
+
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -44,7 +45,6 @@
 
 <script>
 const baseUrl = 'http://localhost:8000';
-
 // import { Modal } from 'bootstrap';
 
 export default {
@@ -55,8 +55,7 @@ export default {
             timeline: new Date().toISOString().substr(0, 10)
         }
     },
-
-    methods: {        
+    methods: {
         async saveTodo(e) {
             e.preventDefault();
             console.log(this.todo, this.type, this.timeline);
@@ -96,8 +95,7 @@ export default {
                 const btn = document.getElementById('closeModal');
                 btn.click();
                 this.$emit('getTodos');
-                console.log('Finally block');
-                
+
             }
         }
     }

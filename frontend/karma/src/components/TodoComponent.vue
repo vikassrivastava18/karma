@@ -14,7 +14,6 @@
                 <card v-for="karma of todos" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
 
-
                     <span class="title">
                         {{ karma.todo }}
                         <IconComponent :type="karma.todo_type" />
@@ -48,7 +47,6 @@
                 @dragover.prevent>
                 <card v-for="karma of complete" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
-
 
                     <span class="title">
                         {{ karma.todo }}

@@ -39,7 +39,6 @@
                         {{ karma.title }}
 
                         <IconComponent :type="karma.type" />
-
                     </span>
                     <span class="content" v-html="karma.karma">
                     </span>

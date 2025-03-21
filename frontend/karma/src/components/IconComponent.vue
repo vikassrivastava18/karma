@@ -17,7 +17,6 @@ import publicIcon from '@/assets/icons/people.svg';
 export default {
     name: 'IconComponent',
     props: {
-
         type: {
             type: String,
             required: true
@@ -46,3 +45,4 @@ export default {
     }
 }
 </script>
+
