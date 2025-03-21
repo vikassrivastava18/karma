@@ -5,16 +5,19 @@
             <h2>
                 TODO
                 <!-- Button trigger modal -->
-                <button type="button" class="btn px-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <img src="../assets/create.png" width="20" alt="create list" id="addItemBtn">
+
+                <button type="button" class="btn px-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <img src="../assets/create.png" width="20" alt="create list">
                 </button>
             </h2>
             <div class="cards-wrapper" :key="todo" @drop="onDrop($event, 'to')" @dragenter.prevent @dragover.prevent>
                 <card v-for="karma of todos" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
-                    <span class="">
+
+
+                    <span class="title">
                         {{ karma.todo }}
-                        <IconComponent :karmaType="karma.todo_type" />
+                        <IconComponent :type="karma.todo_type" />
                     </span>
                 </card>
             </div>
@@ -28,9 +31,10 @@
                 @dragover.prevent>
                 <card v-for="karma of inProgress" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
-                    <span class="">
+                    <span class="title">
                         {{ karma.todo }}
-                        <IconComponent :karmaType="karma.todo_type" />
+
+                        <IconComponent :type="karma.todo_type" />
                     </span>
                 </card>
             </div>
@@ -45,9 +49,10 @@
                 <card v-for="karma of complete" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
 
-                    <span class="">
-                        {{ karma.todo }} {{ karma.todo_type }}
-                        <IconComponent :karmaType="karma.todo_type" />
+
+                    <span class="title">
+                        {{ karma.todo }}
+                        <IconComponent :type="karma.todo_type" />
                     </span>
 
                 </card>
@@ -56,7 +61,7 @@
 
     </div>
 
-    <ModalComponent @refreshTodoData="getTodos" @showToast="this.$emit('showToast')" />
+    <ModalComponent @getTodos="getTodos" />
 </template>
 
 <script>
@@ -65,56 +70,8 @@ import IconComponent from './IconComponent.vue';
 import ModalComponent from './ModalComponent.vue';
 
 const baseUrl = 'http://localhost:8000';
-let data = [
-    {
-        "id": 1,
-        "todo": "Finish first CS50 assignment",
-        "todo_type": "st",
-        "status": "co",
-        "created_on": "2025-01-25",
-        "deadline": "2025-01-10"
-    },
-    {
-        "id": 2,
-        "todo": "Do some DSA",
-        "todo_type": "st",
-        "status": "pr",
-        "created_on": "2025-02-03",
-        "deadline": "2025-01-29"
-    },
-    {
-        "id": 3,
-        "todo": "Do some DSA",
-        "todo_type": "st",
-        "status": "pr",
-        "created_on": "2025-01-25",
-        "deadline": "2025-01-30"
-    },
-    {
-        "id": 4,
-        "todo": "Learn some Python skills",
-        "todo_type": "st",
-        "status": "co",
-        "created_on": "2025-01-26",
-        "deadline": "2025-01-27"
-    },
-    {
-        "id": 5,
-        "todo": "Do something",
-        "todo_type": "st",
-        "status": "to",
-        "created_on": "2025-01-25",
-        "deadline": "2025-01-29"
-    },
-    {
-        "id": 6,
-        "todo": "Play 20 matches by 31",
-        "todo_type": "pl",
-        "status": "co",
-        "created_on": "2025-02-03",
-        "deadline": "2025-01-31"
-    }
-]
+
+
 
 export default {
     name: 'TodoComponent',
@@ -130,11 +87,10 @@ export default {
             complete: []
         };
     },
+
     mounted() {
         // Get the items from backend
-        this.AllTasks = data
-        this.filterItems()
-        // this.getTodos()
+        this.getTodos()
     },
     methods: {
         async getTodos() {
@@ -153,7 +109,8 @@ export default {
                     throw new Error(errorData.message || 'Error occurred')
                 }
                 const data = await res.json()
-                this.AllTasks = data
+                console.log("Todo", data);
+                this.AllTasks = data                
 
                 this.filterItems()
             } catch (error) {
@@ -162,9 +119,22 @@ export default {
             }
         },
 
+        filterItems() {
+            this.todos = this.AllTasks.filter(karma => karma.status === 'to')
+            this.inProgress = this.AllTasks.filter(karma => karma.status === 'pr')
+            this.complete = this.AllTasks.filter(karma => karma.status === 'co')
+            console.log("todos", this.todos);
+            console.log("inProgress", this.inProgress);
+            console.log("complete", this.complete);            
+
+            this.AllTasks.forEach(todo => {
+                todo.src = todo.type
+            })
+        },
+
         async editKarma(id, list) {
             this.$emit('showToast')
-            return
+            
             // Modify for API
             const karma = this.AllTasks.find(karma => karma.id == id)
             const url = baseUrl + '/api/todos/' + id
@@ -189,16 +159,6 @@ export default {
                 this.$emit('errorToast')
             }
 
-        },
-
-        filterItems() {
-            this.todos = this.AllTasks.filter(karma => karma.status === 'to')
-            this.inProgress = this.AllTasks.filter(karma => karma.status === 'pr')
-            this.complete = this.AllTasks.filter(karma => karma.status === 'co')
-
-            this.AllTasks.forEach(todo => {
-                todo.src = todo.type
-            })
         },
 
         startDrag(event, id) {

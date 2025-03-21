@@ -7,6 +7,7 @@
 
     <ToastComponent />
     <ErrorToastComponent />    
+
 </template> 
 
 <script>

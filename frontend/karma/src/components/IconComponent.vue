@@ -1,33 +1,48 @@
-<template>
 
-    <img v-if="karmaType === 'pr'" src="../assets/pray.svg" alt="" width="25">
-    <img v-if="karmaType === 'wo'" src="../assets/work-2.svg" alt="" width="25">
-    <img v-if="karmaType === 'pl'" src="https://www.svgrepo.com/show/465153/game-console-cable.svg" alt="" width="25">
-    <img v-if="karmaType === 'st'" src="../assets/study-2.svg" alt="" width="25">
-    <img v-if="karmaType === 'pu'" src="../assets/public.svg" alt="" width="25">
-    <img v-if="karmaType === 'ho'" src="https://www.svgrepo.com/show/483728/family.svg" alt="" width="25">
+<template class="mx-3">
+    <!-- <span v-html="iconSvg"></span> -->
+    <img :src="iconSvg" alt="Icon for work type" width="30" />
+</template> 
 
-</template>
+<script> 
+import workIcon from '@/assets/icons/work.svg';
+import studyIcon from '@/assets/icons/study.svg';
+import prayerIcon from '@/assets/icons/prayer.svg';
+import playIcon from '@/assets/icons/sports.svg';
+import familyIcon from '@/assets/icons/family.svg';
+import publicIcon from '@/assets/icons/people.svg';
+// Import other icons as needed
 
-<script>
 
 export default {
     name: 'IconComponent',
     props: {
-        karmaType: {
+
+        type: {
             type: String,
             required: true
         }
     },
     computed: {
-
+        iconSvg() {
+            switch (this.type) {
+                case 'wo':
+                    return workIcon;
+                case 'st':
+                    return studyIcon;
+                case 'pr':
+                    return prayerIcon;
+                case 'pl':
+                    return playIcon;
+                case 'ho':
+                    return familyIcon;
+                case 'pu':
+                    return publicIcon;
+                // Add more cases as needed
+                default:
+                    return '';
+            }
+        }
     }
 }
 </script>
-
-<style scoped>
-img {
-    position: absolute;
-    right: 10px;
-}
-</style>

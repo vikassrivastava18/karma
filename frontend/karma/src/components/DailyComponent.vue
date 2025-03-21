@@ -1,4 +1,5 @@
-<template>
+
+<template class="p-5">
     <div class="wrapper">
         
         <div class="container fixed-size" id="karma">
@@ -14,9 +15,9 @@
 
                     <span class="title">
                         {{ karma.title }}
-                        <IconComponent :karmaType="karma.type" />
+                        <IconComponent :type="karma.type" />
                     </span>
-
+                    
                     <span class="content" v-html="karma.karma">
 
                     </span>
@@ -36,7 +37,9 @@
 
                     <span class="title">
                         {{ karma.title }}
-                        <IconComponent :karmaType="karma.type" />
+
+                        <IconComponent :type="karma.type" />
+
                     </span>
                     <span class="content" v-html="karma.karma">
                     </span>
@@ -56,11 +59,10 @@
 
                     <span class="title">
                         {{ karma.title }}
-                        <IconComponent :karmaType="karma.type" />
+                        <IconComponent :type="karma.type" />
                     </span>
                     <span class="content" v-html="karma.karma">
                     </span>
-
                 </card>
             </div>
         </div>
@@ -69,10 +71,9 @@
 </template>
 
 <script>
-/*eslint-disable */
 
-const baseUrl = 'http://localhost:8000';
 import IconComponent from './IconComponent.vue';
+const baseUrl = 'http://localhost:8000';
 
 let data = [
     {
@@ -145,6 +146,7 @@ export default {
             unsatisfied: []
         };
     },
+
     mounted() {
         // if (!this.$store.state.isAuthenticated) {
         //     this.$router.push({ path: '/login' });
@@ -156,7 +158,7 @@ export default {
         async getKarmas() {
             this.karmas = data
             this.filterItems()
-            return
+
             // Modiify for API
             const url = baseUrl + '/api/tasks'
             const init_obj = {
@@ -186,7 +188,6 @@ export default {
 
         async editKarma(id, list) {
             this.$emit('showToast')
-            return
             // Modify for API
             const karma = this.karmas.find(karma => karma.id == id)
             const url = baseUrl + '/api/tasks/' + id

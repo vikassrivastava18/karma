@@ -4,38 +4,39 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Task</h5>
-                    <button type="button" class="btn-close" 
-                    id="closeModal" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form @submit.prevent="createTask">
+                    <form @submit="saveTodo">
                         <div class="mb-3">
-                            <label for="taskName" class="form-label">Task Name</label>
-                            <input type="text" class="form-control" 
-                                   v-model="task.todo" id="taskName"
-                                aria-describedby="emailHelp">
+                            <label for="todoText" class="form-label">Todo</label>
+                            <input type="text" class="form-control" id="todoText" v-model="todo"
+                                placeholder="Enter your todo">
                         </div>
                         <div class="mb-3">
-                            <label for="taskType" class="form-label">Task Type</label>
-                            <select name="taskType" id="taskType" 
-                                v-model="task.todo_type" class="form-select">
-                                <option value="pr">PRAYER</option>
-                                <option value="st">STUDY</option>
-                                <option value="wo">WORK</option>
-                                <option value="ho">FAMILY</option>
-                                <option value="pu">PUBLIC</option>
-                                <option value="pl">PLAY</option>
+                            <label for="todoType" class="form-label">Type</label>
+                            <select class="form-select" id="todoType" v-model="todoType">
+                                <option value="pr">Prayer</option>
+                                <option value="wo">Work</option>
+                                <option value="st">Study</option>
+                                <option value="ho">Family</option>
+                                <option value="pl">Play</option>
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="setTimeline">Set Timeline</label>
-                            <input type="date" 
-                            v-model="task.deadline" class="form-control" id="setTimeline">                            
+                            <label for="todoTimeline" class="form-label">Timeline for completion</label>
+                            <input type="date" class="form-control" id="todoTimeline" v-model="timeline"
+                                placeholder="Enter your todo">
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" 
+                                data-bs-dismiss="modal" id="closeModal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
                     </form>
                 </div>
+
             </div>
         </div>
     </div>
@@ -44,58 +45,62 @@
 <script>
 const baseUrl = 'http://localhost:8000';
 
+// import { Modal } from 'bootstrap';
+
 export default {
     data() {
         return {
-            task: {
-                todo: '',
-                todo_type: 'pl',
-                deadline: ''
-            }
-        };
+            todo: '',
+            todoType: 'pr',
+            timeline: new Date().toISOString().substr(0, 10)
+        }
     },
-    methods: {
-        async createTask () {
-            console.log(this.task);
-            // Make API for submission
-            const url = baseUrl + '/api/todos'
+
+    methods: {        
+        async saveTodo(e) {
+            e.preventDefault();
+            console.log(this.todo, this.type, this.timeline);
+            const url = baseUrl + '/api/todos';
             const init_obj = {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Token ' + localStorage.getItem('Authentication-Token')
                 },
-                body: JSON.stringify(this.task)
-            }
+
+                body: JSON.stringify({
+                    todo: this.todo,
+                    todo_type: this.todoType,
+                    deadline: this.timeline
+                })
+            };
 
             try {
-                const res = await fetch(url, init_obj)
-                if (!res.ok) {
-                    const errorData = await res.json()
-                    throw new Error(errorData.message || 'Error occurred')
+                const response = await fetch(url, init_obj);
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Error occurred');
                 }
-                await res.json()                
-                this.$emit('refreshTodoData')
-                // Close the modal
-                const modalCloseBtn = document.getElementById('closeModal')
-                modalCloseBtn.click()
-                // Reset the form
-                this.task = {
-                    todo: '',
-                    todo_type: '',
-                    deadline: ''
-                };
+                await response.json();
+
+                // Optionally, you can reset the form fields here
+                this.todo = '';
+                this.todoType = 'pr';
+                this.timeline = '';
                 this.$emit('showToast')
-
+                
             } catch (error) {
-                console.error('Error:', error.message)
-                // handle error (e.g., show an error message)
+                console.error('Error:', error);
+                this.$emit('errorToast')
+            } finally {
+                const btn = document.getElementById('closeModal');
+                btn.click();
+                this.$emit('getTodos');
+                console.log('Finally block');
+                
             }
-            
-
         }
-    },
-
+    }
 }
 
 </script>

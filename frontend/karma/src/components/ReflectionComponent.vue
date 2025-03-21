@@ -45,6 +45,7 @@ export default {
             } catch (error) {
                 this.$emit('errorToast')
                 console.error('There was a problem with the submission:', error);
+                this.$emit('errorToast')
             }
         }
     }
