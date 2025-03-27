@@ -5,10 +5,15 @@
         <RouterView />
     </main>
 
+    <ToastComponent />
+    
+    <ErrorToastComponent />    
 </template>
 
 <script>
 import HeaderComponent from './components/HeaderComponent.vue';
+import ToastComponent from './components/ToastComponent.vue';
+import ErrorToastComponent from './components/ErrorToastComponent.vue';
 
 export default {
     name: 'App',
@@ -16,7 +21,9 @@ export default {
 
     },
     components: {
-        HeaderComponent
+        HeaderComponent,
+        ToastComponent,
+        ErrorToastComponent
     }
 
 }

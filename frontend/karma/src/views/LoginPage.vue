@@ -20,11 +20,18 @@
 
     </div>
 
+    <ToastComponent />
+    
+    <ErrorToastComponent />  
+
 </template>
 
 <script>
-/* eslint-disable */
-import { mapActions } from 'vuex'
+import ToastComponent from '../components/ToastComponent.vue';
+import ErrorToastComponent from '../components/ErrorToastComponent.vue';
+
+import { mapActions } from 'vuex';
+import { Toast } from 'bootstrap'
 
 export default {
     name: 'LoginComponent',
@@ -36,11 +43,14 @@ export default {
             }
         }
     },
+    components: {
+        ToastComponent,
+        ErrorToastComponent
+    },
     methods: {
-        // ...mapActions(['login']),
+        ...mapActions(['login']),
         
         async submit() {
-            this.$router.push({ path: '/' })
             
             const url = 'http://127.0.0.1:8000/login'
             const init_obj = {
@@ -56,7 +66,8 @@ export default {
                 const res = await fetch(url, init_obj)
                 if (!res.ok) {
                     const errorData = await res.json()
-                    throw new Error(errorData.message || 'Error occurred')
+                    this.$emit('errorToast')
+                    throw new Error(errorData.message || 'Login Error occurred')
                 }
                 const data = await res.json()
                 console.log('Success:', data)
@@ -68,10 +79,24 @@ export default {
                 this.$router.push({ path: '/' })
                 // handle success (e.g., show a success message, redirect, etc.)
             } catch (error) {
-                console.error('Error:', error.message)
+                console.error('Error-', error.message)
+                this.errorToast()
                 // handle error (e.g., show an error message)
             }
-        }
+        },
+
+        showToastPopup() {
+            const toastEl = document.getElementById('liveToast')
+            const toast = new Toast(toastEl)
+            toast.show()
+        },
+
+        errorToast() {
+            const toastEl = document.getElementById('liveToastError')
+            const toast = new Toast(toastEl)
+            toast.show()
+        },
+
     }
 }
 </script>

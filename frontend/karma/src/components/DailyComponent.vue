@@ -74,64 +74,6 @@
 import IconComponent from './IconComponent.vue';
 const baseUrl = 'http://localhost:8000';
 
-let data = [
-    {
-        "id": 2562,
-        "title": "Daily Puja",
-        "karma": "<p><b>Mandatory</b> after bath.<br> Do with <b>bhava</b></p>",
-        "date": "2025-02-04",
-        "type": "pr",
-        "review": "sa",
-        "src": "pr"
-    },
-    {
-        "id": 2563,
-        "title": "Daily Study",
-        "karma": "<p>Study for 2 hour.<br>Go <b>Deep</b></p>",
-        "date": "2025-02-04",
-        "type": "st",
-        "review": "sa",
-        "src": "st"
-    },
-    {
-        "id": 2564,
-        "title": "Daily Work",
-        "karma": "<p>Work with passion, sincerity. <br><b>Daily</b> </p>",
-        "date": "2025-02-04",
-        "type": "wo",
-        "review": "us",
-        "src": "wo"
-    },
-    {
-        "id": 2565,
-        "title": "Family Time",
-        "karma": "<p>Spend time with family.<br>Do with <b>love</b></p>",
-        "date": "2025-02-04",
-        "type": "ho",
-        "review": "pe",
-        "src": "ho"
-    },
-    {
-        "id": 2566,
-        "title": "Play Time",
-        "karma": "<p>Play with friends/chess<br>Do with <b>focus</b></p>",
-        "date": "2025-02-04",
-        "type": "pl",
-        "review": "pe",
-        "src": "pl"
-    },
-    {
-        "id": 2567,
-        "title": "Public Life",
-        "karma": "<p><b>Interaction</b> and relationships.<br> Do with <b>love</b></p>",
-        "date": "2025-02-04",
-        "type": "pu",
-        "review": "pe",
-        "src": "pu"
-    }
-]
-
-
 export default {
     name: 'DailyComponent',
     components: {
@@ -155,9 +97,6 @@ export default {
     },
     methods: {
         async getKarmas() {
-            this.karmas = data
-            this.filterItems()
-
             // Modiify for API
             const url = baseUrl + '/api/tasks'
             const init_obj = {
@@ -185,8 +124,7 @@ export default {
             }
         },
 
-        async editKarma(id, list) {
-            this.$emit('showToast')
+        async editKarma(id, list) {            
             // Modify for API
             const karma = this.karmas.find(karma => karma.id == id)
             const url = baseUrl + '/api/tasks/' + id

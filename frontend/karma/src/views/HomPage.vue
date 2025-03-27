@@ -3,10 +3,7 @@
     
     <TodoComponent @showToast="showToastPopup" @errorToast="errorToast" />
     
-    <ReflectionComponent @showToast="showToastPopup" @errorToast="errorToast" />    
-
-    <ToastComponent />
-    <ErrorToastComponent />    
+    <ReflectionComponent @showToast="showToastPopup" @errorToast="errorToast" />        
 
 </template> 
 
@@ -40,9 +37,9 @@ export default {
     },
     mounted() {
         // Check if the user is authenticated
-        // if (!this.$store.state.isAuthenticated) {
-        //     this.$router.push({ path: '/login' });
-        // }       
+        if (!this.$store.state.isAuthenticated) {
+            this.$router.push({ path: '/login' });
+        }       
     },
 
     methods: {

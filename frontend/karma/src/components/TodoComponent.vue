@@ -69,8 +69,6 @@ import ModalComponent from './ModalComponent.vue';
 
 const baseUrl = 'http://localhost:8000';
 
-
-
 export default {
     name: 'TodoComponent',
     components: {
@@ -131,8 +129,6 @@ export default {
         },
 
         async editKarma(id, list) {
-            this.$emit('showToast')
-            
             // Modify for API
             const karma = this.AllTasks.find(karma => karma.id == id)
             const url = baseUrl + '/api/todos/' + id

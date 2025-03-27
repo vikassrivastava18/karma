@@ -22,9 +22,6 @@ export default {
     },
     methods: {
         async submitReflection() {
-            this.$emit('showToast')
-            this.reflection = '';
-            return
             // Make API call to submit the reflection
             try {
                 const url = baseUrl + '/api/reflections'
@@ -44,7 +41,6 @@ export default {
                 this.reflection = '';
             } catch (error) {
                 this.$emit('errorToast')
-                console.error('There was a problem with the submission:', error);
                 this.$emit('errorToast')
             }
         }

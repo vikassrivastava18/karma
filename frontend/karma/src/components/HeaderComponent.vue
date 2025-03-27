@@ -10,7 +10,7 @@
                     <button type="button" class="btn btn-outline-dark me-2" @click="logout">Logout</button>
                 </div>
                 <div class="text-end" v-else>
-                    <button type="button" class="btn btn-outline-dark me-2">Login</button>
+                    <button type="button" class="btn btn-outline-dark me-2" @click="login">Login</button>
                     <!-- <button type="button" class="btn btn-warning">Sign-up</button> -->
                 </div>
             </div>
@@ -29,6 +29,9 @@ export default {
         logout() {
             localStorage.removeItem('Authentication-Token')
             this.$store.dispatch('logout')
+            this.$router.push('/login')
+        },
+        login() {
             this.$router.push('/login')
         }
     }
