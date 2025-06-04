@@ -49,43 +49,43 @@ export default {
 </script>
 
 <style scoped>
-.reflection-component {
-    max-width: 1150px;
-    margin: auto;
-    margin-top: 100px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: lightyellow;
-}
+    .reflection-component {
+        max-width: 1150px;
+        margin: auto;
+        margin-top: 100px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: lightyellow;
+    }
 
-.form-group {
-    margin-bottom: 15px;
-}
+    .form-group {
+        margin-bottom: 15px;
+    }
 
-label {
-    display: block;
-    margin-bottom: 5px;
-}
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
 
-textarea {
-    width: 100%;
-    height: 100px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
+    textarea {
+        width: 100%;
+        height: 100px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
 
-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+    button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
 
-button:hover {
-    background-color: #0056b3;
-}
+    button:hover {
+        background-color: #0056b3;
+    }
 </style>

@@ -15,7 +15,7 @@
                     @dragstart="startDrag($event, karma.id)">
 
                     <span >
-                        <h5>{{ karma.todo }}
+                        <h5>{{ truncate(karma.todo, 10) }}
                         <IconComponent :type="karma.todo_type" />
                         </h5>
                     </span>
@@ -32,7 +32,7 @@
                 <card v-for="karma of inProgress" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
                     <span>
-                       <h5> {{ karma.todo }}
+                       <h5> {{ truncate(karma.todo, 10) }}
 
                         <IconComponent :type="karma.todo_type" />
                         </h5>
@@ -51,7 +51,8 @@
                     @dragstart="startDrag($event, karma.id)">
 
                     <span >
-                        <h5>{{ karma.todo }}
+
+                        <h5>{{ truncate(karma.todo, 10) }}
                         <IconComponent :type="karma.todo_type" />
                         </h5>
                     </span>
@@ -92,6 +93,10 @@ export default {
         this.getTodos()
     },
     methods: {
+        truncate(text, length) {
+            if (!text) return '';
+            return text.length > length ? text.substring(0, length) + '...' : text;
+        },
         async getTodos() {
             const url = baseUrl + '/api/todos'
             const init_obj = {
@@ -109,7 +114,7 @@ export default {
                 }
                 const data = await res.json()
                 console.log("Todo", data);
-                this.AllTasks = data                
+                this.AllTasks = data
 
                 this.filterItems()
             } catch (error) {
@@ -124,7 +129,7 @@ export default {
             this.complete = this.AllTasks.filter(karma => karma.status === 'co')
             console.log("todos", this.todos);
             console.log("inProgress", this.inProgress);
-            console.log("complete", this.complete);            
+            console.log("complete", this.complete);
 
             this.AllTasks.forEach(todo => {
                 todo.src = todo.type

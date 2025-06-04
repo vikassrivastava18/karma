@@ -150,3 +150,7 @@ CRONJOBS = [
     ('*/1 * * * *', 'api.cron.my_cron_job', '>> ' + os.path.join(BASE_DIR,'log/debug7.log' + ' 2>&1 '))
 #     30 23 * * * -> At 11:30 every day
 ]
+
+CELERY_BROKER_URL = "redis://:hellYeah@2023@localhost:6379/0"
+
+
