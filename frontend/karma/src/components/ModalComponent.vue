@@ -1,5 +1,4 @@
 <template>
-
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -51,7 +50,7 @@ export default {
     data() {
         return {
             todo: '',
-            todoType: 'pr',
+            todoType: 'st',
             timeline: new Date().toISOString().substr(0, 10)
         }
     },
@@ -84,8 +83,8 @@ export default {
 
                 // Optionally, you can reset the form fields here
                 this.todo = '';
-                this.todoType = 'pr';
-                this.timeline = '';
+                this.todoType = 'st';
+                // this.timeline = '';
                 this.$emit('showToast')
                 
             } catch (error) {

@@ -99,23 +99,21 @@ export default {
         async getKarmas() {
             // Modiify for API
             const url = baseUrl + '/api/tasks'
-            const init_obj = {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Token ' + localStorage.getItem('Authentication-Token')
-                },
-            }
+            // const init_obj = {
+            //     method: 'GET',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         'Authorization': 'Token ' + localStorage.getItem('Authentication-Token')
+            //     },
+            // }
 
             try {
-                const res = await fetch(url, init_obj)
-                if (!res.ok) {
-                    const errorData = await res.json()
-                    throw new Error(errorData.message || 'Error occurred')
-                }
-                const data = await res.json()
-                this.karmas = data
-                console.log("Daily", data);
+                const res = await this.$axios.get(url)
+                // if (!res.ok) {
+                //     const errorData = await res.data
+                //     throw new Error(errorData.message || 'Error occurred')
+                // }
+                this.karmas = res.data
                 
                 this.filterItems()
             } catch (error) {

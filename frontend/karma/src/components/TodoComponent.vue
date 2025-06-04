@@ -14,9 +14,10 @@
                 <card v-for="karma of todos" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
 
-                    <span class="title">
-                        {{ karma.todo }}
+                    <span >
+                        <h5>{{ karma.todo }}
                         <IconComponent :type="karma.todo_type" />
+                        </h5>
                     </span>
                 </card>
             </div>
@@ -30,10 +31,11 @@
                 @dragover.prevent>
                 <card v-for="karma of inProgress" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
-                    <span class="title">
-                        {{ karma.todo }}
+                    <span>
+                       <h5> {{ karma.todo }}
 
                         <IconComponent :type="karma.todo_type" />
+                        </h5>
                     </span>
                 </card>
             </div>
@@ -48,9 +50,10 @@
                 <card v-for="karma of complete" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
 
-                    <span class="title">
-                        {{ karma.todo }}
+                    <span >
+                        <h5>{{ karma.todo }}
                         <IconComponent :type="karma.todo_type" />
+                        </h5>
                     </span>
 
                 </card>
