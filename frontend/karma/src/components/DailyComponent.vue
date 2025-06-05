@@ -99,22 +99,10 @@ export default {
         async getKarmas() {
             // Modiify for API
             const url = baseUrl + '/api/tasks'
-            // const init_obj = {
-            //     method: 'GET',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //         'Authorization': 'Token ' + localStorage.getItem('Authentication-Token')
-            //     },
-            // }
 
             try {
                 const res = await this.$axios.get(url)
-                // if (!res.ok) {
-                //     const errorData = await res.data
-                //     throw new Error(errorData.message || 'Error occurred')
-                // }
                 this.karmas = res.data
-                
                 this.filterItems()
             } catch (error) {
                 console.error('Error:', error.message)
@@ -126,22 +114,10 @@ export default {
             // Modify for API
             const karma = this.karmas.find(karma => karma.id == id)
             const url = baseUrl + '/api/tasks/' + id
-            const init_obj = {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Token ' + localStorage.getItem('Authentication-Token')
-                },
-                body: JSON.stringify({...karma,"review": list})
-            }
+            const updatedData = {...karma, "review": list};
 
             try {
-                const res = await fetch(url, init_obj)
-                if (!res.ok) {
-                    const errorData = await res.json()
-                    throw new Error(errorData.message || 'Error occurred')
-                }
-                await res.json()
+                await this.$axios.put(url, updatedData)
                 this.$emit('showToast')
             } catch (error) {
                 console.error('Error:', error.message)

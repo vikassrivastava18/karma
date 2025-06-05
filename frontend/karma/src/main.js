@@ -11,7 +11,7 @@ import HomePage from './views/HomPage.vue'
 import LoginPage from './views/LoginPage.vue'
 
 const routes = [
-  { path: '/', component: HomePage},
+  { path: '/', component: HomePage, meta: { requiresAuth: true } },
   { path: '/login', component: LoginPage},
 ]
 
@@ -19,6 +19,19 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth) {
+    const token = localStorage.getItem('Authentication-Token');
+    if (token) {
+      next(); // User is authenticated, allow access
+    } else {
+      next('/login'); // Redirect to login page if not authenticated
+    }
+  } else {
+    next(); // No authentication required, allow access
+  }
+});
 
 let app = createApp(App)
   .use(router)
@@ -31,14 +44,13 @@ app.mount('#app')
 // Request interceptor
 axios.interceptors.request.use((config) => {
   const token = localStorage.getItem('Authentication-Token')
-  console.log("Token@: ", token);
   if (token) {
-    
+    config.headers['Content-Type'] = 'application/json';
     config.headers.Authorization = `Token ${token}`
   }
   return config
 })
-
+// 
 // // Response interceptor
 // axios.interceptors.response.use((response) => {
 //   // Handle the response here

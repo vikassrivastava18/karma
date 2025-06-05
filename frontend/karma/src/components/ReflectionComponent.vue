@@ -25,18 +25,9 @@ export default {
             // Make API call to submit the reflection
             try {
                 const url = baseUrl + '/api/reflections'
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Token ' + localStorage.getItem('Authentication-Token')
-                    },
-                    body: JSON.stringify({ reflection: this.reflection })
-                });
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                await response.json();
+                const reflection = { reflection: this.reflection }
+                await this.$axios.post(url, reflection)
+                
                 this.$emit('showToast')
                 this.reflection = '';
             } catch (error) {

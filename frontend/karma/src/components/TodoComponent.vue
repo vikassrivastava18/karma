@@ -5,7 +5,6 @@
             <h2>
                 TODO
                 <!-- Button trigger modal -->
-
                 <button type="button" class="btn px-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
                     <img src="../assets/create.png" width="20" alt="create list">
                 </button>
@@ -15,7 +14,7 @@
                     @dragstart="startDrag($event, karma.id)">
 
                     <span >
-                        <h5>{{ truncate(karma.todo, 10) }}
+                        <h5>{{ truncate(karma.todo, 15) }}
                         <IconComponent :type="karma.todo_type" />
                         </h5>
                     </span>
@@ -32,8 +31,7 @@
                 <card v-for="karma of inProgress" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
                     <span>
-                       <h5> {{ truncate(karma.todo, 10) }}
-
+                       <h5> {{ truncate(karma.todo, 15) }}
                         <IconComponent :type="karma.todo_type" />
                         </h5>
                     </span>
@@ -52,7 +50,7 @@
 
                     <span >
 
-                        <h5>{{ truncate(karma.todo, 10) }}
+                        <h5>{{ truncate(karma.todo, 15) }}
                         <IconComponent :type="karma.todo_type" />
                         </h5>
                     </span>
@@ -107,15 +105,10 @@ export default {
                 },
             }
             try {
-                const res = await fetch(url, init_obj)
-                if (!res.ok) {
-                    const errorData = await res.json()
-                    throw new Error(errorData.message || 'Error occurred')
-                }
-                const data = await res.json()
-                console.log("Todo", data);
+                const res = await this.$axios.get(url, init_obj)
+    
+                const data = res.data
                 this.AllTasks = data
-
                 this.filterItems()
             } catch (error) {
                 console.error('Error:', error.message)
@@ -140,21 +133,10 @@ export default {
             // Modify for API
             const karma = this.AllTasks.find(karma => karma.id == id)
             const url = baseUrl + '/api/todos/' + id
-            const init_obj = {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Token ' + localStorage.getItem('Authentication-Token')
-                },
-                body: JSON.stringify({ ...karma, "review": list })
-            }
+            const updatedData = { ...karma, "review": list }
+
             try {
-                const res = await fetch(url, init_obj)
-                if (!res.ok) {
-                    const errorData = await res.json()
-                    throw new Error(errorData.message || 'Error occurred')
-                }
-                await res.json()
+                await this.$axios.put(url, updatedData)
                 this.$emit('showToast')
             } catch (error) {
                 console.error('Error:', error.message)
@@ -192,83 +174,83 @@ export default {
     align-items: center;
 }
 
-.container {
-    background: #dee8ff;
-    border-radius: 10px;
-    padding: 20px;
-    margin: 10px;
-    display: flex;
-    flex-direction: column;
-    max-height: 70vh;
-}
+    .container {
+        background: #dee8ff;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 10px;
+        display: flex;
+        flex-direction: column;
+        max-height: 70vh;
+    }
 
-.cards-wrapper {
-    scrollbar-width: thin;
-    padding-inline: 10px;
-    padding-top: 10px;
-    /* max-height: calc(100vh - 100px); */
-    min-width: 328px;
-    border-radius: 10px;
-    overflow-y: scroll;
-    min-height: 100px;
-    flex-grow: 1;
-    transition: 0.3s;
-}
+    .cards-wrapper {
+        scrollbar-width: thin;
+        padding-inline: 10px;
+        padding-top: 10px;
+        /* max-height: calc(100vh - 100px); */
+        min-width: 328px;
+        border-radius: 10px;
+        overflow-y: scroll;
+        min-height: 100px;
+        flex-grow: 1;
+        transition: 0.3s;
+    }
 
-.card-placeable {
-    background: #0000000d;
-}
+    .card-placeable {
+        background: #0000000d;
+    }
 
-.card {
-    padding: 10px;
-    /* width: 300px; */
-    margin-bottom: 20px;
-    background: white;
-    border-radius: 10px;
-    overflow-y: hidden;
-    filter: drop-shadow(0 2px 7px #00000040);
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
-}
+    .card {
+        padding: 10px;
+        /* width: 300px; */
+        margin-bottom: 20px;
+        background: white;
+        border-radius: 10px;
+        overflow-y: hidden;
+        filter: drop-shadow(0 2px 7px #00000040);
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+    }
 
-.type {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding-block: 5px;
-    gap: 5px;
-    margin: -10px;
-    margin-bottom: 10px;
-}
+    .type {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding-block: 5px;
+        gap: 5px;
+        margin: -10px;
+        margin-bottom: 10px;
+    }
 
 
-.fixed-size {
-    /* margin-top: 80vh; */
-    padding: 20px;
-    width: 800px;
-    /* Set your desired width */
-    height: 500px;
-    /* Set your desired height */
-    overflow: auto;
-    /* Add overflow if content exceeds the fixed size */
-}
+    .fixed-size {
+        /* margin-top: 80vh; */
+        padding: 20px;
+        width: 800px;
+        /* Set your desired width */
+        height: 500px;
+        /* Set your desired height */
+        overflow: auto;
+        /* Add overflow if content exceeds the fixed size */
+    }
 
-.daily-component {
-    text-align: center;
-    margin: 20px;
-}
+    .daily-component {
+        text-align: center;
+        margin: 20px;
+    }
 
-#todo {
-    background-color: lightyellow;
-}
+    #todo {
+        background-color: lightyellow;
+    }
 
-#inProgress {
-    background-color: lightblue;
-}
+    #inProgress {
+        background-color: lightblue;
+    }
 
-#complete {
-    background-color: lightgreen;
-}
+    #complete {
+        background-color: lightgreen;
+    }
 </style>
