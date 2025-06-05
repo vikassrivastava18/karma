@@ -43,7 +43,7 @@ ul {
     float: right;
 }
 header {
-    background-color: #000;
+    background-color: #413d3d;
     width: 100vw;
     margin-top: 0px;
 }

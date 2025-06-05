@@ -14,7 +14,7 @@
                     @dragstart="startDrag($event, karma.id)">
 
                     <span >
-                        <h5>{{ truncate(karma.todo, 15) }}
+                        <h5>{{ karma.todo}}
                         <IconComponent :type="karma.todo_type" />
                         </h5>
                     </span>
@@ -31,7 +31,7 @@
                 <card v-for="karma of inProgress" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
                     <span>
-                       <h5> {{ truncate(karma.todo, 15) }}
+                       <h5> {{ karma.todo}}
                         <IconComponent :type="karma.todo_type" />
                         </h5>
                     </span>
@@ -50,7 +50,7 @@
 
                     <span >
 
-                        <h5>{{ truncate(karma.todo, 15) }}
+                        <h5>{{ karma.todo}}
                         <IconComponent :type="karma.todo_type" />
                         </h5>
                     </span>
@@ -97,16 +97,9 @@ export default {
         },
         async getTodos() {
             const url = baseUrl + '/api/todos'
-            const init_obj = {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Token ' + localStorage.getItem('Authentication-Token')
-                },
-            }
+            
             try {
-                const res = await this.$axios.get(url, init_obj)
-    
+                const res = await this.$axios.get(url)
                 const data = res.data
                 this.AllTasks = data
                 this.filterItems()

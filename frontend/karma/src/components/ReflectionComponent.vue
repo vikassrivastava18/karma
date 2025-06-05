@@ -1,5 +1,5 @@
 <template>
-    <div class="reflection-component card p-4 shadow-sm">
+    <div class="reflection-component card shadow-sm">
         <h2>Daily Reflection</h2>
         <form @submit.prevent="submitReflection">
             <div class="form-group">
@@ -41,10 +41,10 @@ export default {
 
 <style scoped>
     .reflection-component {
-        max-width: 1150px;
+        padding: 30px;
+        max-width: 75vw;
         margin: auto;
         margin-top: 100px;
-        padding: 20px;
         border: 1px solid #ccc;
         border-radius: 4px;
         background-color: lightyellow;

@@ -6,6 +6,7 @@ from .models import Karma
 today = timezone.now().date()
 
 def my_cron_job():
+
     karmas = Karma.objects.filter(date=today)
     checked = all(karma.review != 'pe' for karma in karmas)
 
