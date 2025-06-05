@@ -179,13 +179,10 @@ export default {
 <style scoped>
 .wrapper2 {
     padding: 30px;
-    max-height: 60vh;
+    /* max-height: 60vh; */
     max-width: 80vw;
-
-    /* margin-top: 20vh; */
     display: flex;
     margin: auto;
-    margin-top: 45vh;
     justify-content: center;
     align-items: center;
 }

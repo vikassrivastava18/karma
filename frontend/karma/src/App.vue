@@ -83,15 +83,6 @@ main {
     font-weight: 700;
 }
 
-header {
-    position: absolute;
-    top: 10px;
-    text-align: left;
-    width: 98vw;
-}
 
-header h1 {
-    margin-left: 20px;
-    color: rgb(233, 93, 12);
-}
+
 </style>

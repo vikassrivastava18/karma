@@ -1,5 +1,5 @@
 
-<template class="p-5">
+<template>
     <div class="wrapper">
         
         <div class="container fixed-size" id="karma">
@@ -185,6 +185,7 @@ export default {
     background: #dee8ff;
     border-radius: 10px;
     padding: 20px;
+    margin: 10px;
     display: flex;
     flex-direction: column;
     max-height: 70vh;
@@ -194,7 +195,7 @@ export default {
     scrollbar-width: thin;
     padding-inline: 10px;
     padding-top: 10px;
-    max-height: calc(100vh - 100px);
+    /* max-height: calc(100vh - 100px); */
     min-width: 328px;
     border-radius: 10px;
     overflow-y: scroll;
@@ -233,10 +234,8 @@ export default {
 
 .wrapper {
     padding: 30px;
-    max-height: 60vh;
+    /* max-height: 60vh; */
     max-width: 80vw;
-
-    /* margin-top: 20vh; */
     display: flex;
     margin: auto;
     justify-content: center;
@@ -244,12 +243,13 @@ export default {
 }
 
 .fixed-size {
-    margin: 10px;
-    margin-top: 50vh;
-    padding: 20px;    
-    width: 800px; /* Set your desired width */
-    height: 600px; /* Set your desired height */
-    overflow: auto; /* Add overflow if content exceeds the fixed size */
+    padding: 20px;
+    width: 800px;
+    /* Set your desired width */
+    height: 500px;
+    /* Set your desired height */
+    overflow: auto;
+    /* Add overflow if content exceeds the fixed size */
 }
 .daily-component {
     text-align: center;
