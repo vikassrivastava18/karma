@@ -159,6 +159,7 @@ export default {
 <style scoped>
 .wrapper2 {
     padding: 30px;
+    padding-top: 45px;
     /* max-height: 60vh; */
     max-width: 80vw;
     display: flex;

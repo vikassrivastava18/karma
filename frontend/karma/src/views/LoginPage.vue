@@ -1,7 +1,8 @@
 <template>
-    <div class="container">
+    
+    <div class="loginC p-4">
         <h2>Login</h2>
-        <form @submit.prevent="submit">
+        <form @submit.prevent="submit" class="p-4">
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Username</label>
                 <input type="text" class="form-control" v-model="formData.username" id="exampleInputEmail1"
@@ -103,18 +104,16 @@ export default {
 
 
 <style scoped>
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.loginC {
     height: 100vh;
-    width: 30vw;
+    width: 40vw;
+    margin: 0 auto;
 }
 
 form {
     width: 66%;
-    margin: auto;
-    padding: 20px;
+    /* margin: auto;
+    padding: 20px; */
     background: #dee8ff;
     border-radius: 10px;
 }
