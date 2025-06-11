@@ -72,6 +72,7 @@ class TodoStatus(models.TextChoices):
     TODO = "to", _("Todo")
     PROGRESS = "pr", _("Progress")
     COMPLETE = "co", _("Complete")
+    ARCHIVED = "ar", _("Archived")
 
 
 class Todo(models.Model):
@@ -91,12 +92,13 @@ class Todo(models.Model):
     )
     created_on = models.DateField(auto_now=True)
     deadline = models.DateField()
+    completed_on = models.DateTimeField(null=True, blank=True)
 
     def get_todo_type_display_name(self):
         return self.get_todo_type_display()
 
     def __str__(self):
-        return f"{self.get_todo_type_display_name()}, {self.todo}"
+        return f"{self.todo} - {self.get_todo_type_display_name()}"
     
 
 class Reflection(models.Model):

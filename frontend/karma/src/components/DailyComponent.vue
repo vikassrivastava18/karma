@@ -2,15 +2,15 @@
 <template>
     <div class="wrapper">
         
-        <div class="container fixed-size" id="karma">
+        <div v-for="status in statuses" :key="status.id" :id="status.id" class="container fixed-size">
             <h2>
-                DAILY
+                {{ status.title }}
                 <!-- Button trigger modal -->
                 <button type="button" class="btn px-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 </button>
             </h2>
-            <div class="cards-wrapper" :key="todo" @drop="onDrop($event, 'pe')" @dragenter.prevent @dragover.prevent>
-                <card v-for="karma of todos" :key="karma.id" :id="karma.id" class="card" draggable="true"
+            <div class="cards-wrapper" :key="status.id" @drop="onDrop($event, status.id)" @dragenter.prevent @dragover.prevent>
+                <card v-for="karma of filteredTasks[status.id]" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
 
                     <span class="title">
@@ -26,45 +26,6 @@
             </div>
         </div>
 
-        <div class="container fixed-size" id="satisfied">
-            <h2>
-                SATISFIED
-            </h2>
-            <div class="cards-wrapper" :key="satisfied" @drop="onDrop($event, 'sa')" @dragenter.prevent
-                @dragover.prevent>
-                <card v-for="karma of satisfied" :key="karma.id" :id="karma.id" class="card" draggable="true"
-                    @dragstart="startDrag($event, karma.id)">
-
-                    <span class="title">
-                        {{ karma.title }}
-
-                        <IconComponent :type="karma.type" />
-                    </span>
-                    <span class="content" v-html="karma.karma">
-                    </span>
-
-                </card>
-            </div>
-        </div>
-
-        <div class="container fixed-size" id="unsatisfied">
-            <h2>
-                UNSATISFIED
-            </h2>
-            <div class="cards-wrapper" :key="unsatisfied" @drop="onDrop($event, 'us')" @dragenter.prevent
-                @dragover.prevent>
-                <card v-for="karma of unsatisfied" :key="karma.id" :id="karma.id" class="card" draggable="true"
-                    @dragstart="startDrag($event, karma.id)">
-
-                    <span class="title">
-                        {{ karma.title }}
-                        <IconComponent :type="karma.type" />
-                    </span>
-                    <span class="content" v-html="karma.karma">
-                    </span>
-                </card>
-            </div>
-        </div>
 
     </div>
 </template>
@@ -81,18 +42,22 @@ export default {
     },
     data() {
         return {
-            karmas: [],
-            todos: [],
-            satisfied: [],
-            unsatisfied: []
+            AllKarmas: [],
+            statuses: [
+                {id: 'ka', 'title': 'DAILY'},
+                {id: 'sa', 'title': 'SATISFIED'},
+                {id: 'us', 'title': 'UNSATISFIED'}
+            ],
+            filteredTasks: {
+                ka: [],
+                sa: [],
+                us: []
+            }
+            
         };
     },
 
     mounted() {
-        // if (!this.$store.state.isAuthenticated) {
-        //     this.$router.push({ path: '/login' });
-        // }
-        // Get the items from backend
         this.getKarmas()
     },
     methods: {
@@ -102,7 +67,7 @@ export default {
 
             try {
                 const res = await this.$axios.get(url)
-                this.karmas = res.data
+                this.AllKarmas = res.data
                 this.filterItems()
             } catch (error) {
                 console.error('Error:', error.message)
@@ -112,10 +77,11 @@ export default {
 
         async editKarma(id, list) {            
             // Modify for API
-            const karma = this.karmas.find(karma => karma.id == id)
+            const karma = this.AllKarmas.find(karma => karma.id == id)
             const url = baseUrl + '/api/tasks/' + id
             const updatedData = {...karma, "review": list};
-
+            console.log("updated data: ", updatedData);
+            
             try {
                 await this.$axios.put(url, updatedData)
                 this.$emit('showToast')
@@ -128,11 +94,11 @@ export default {
         },
 
         filterItems() {
-            this.todos = this.karmas.filter(karma => karma.review === 'pe')
-            this.satisfied = this.karmas.filter(karma => karma.review === 'sa')
-            this.unsatisfied = this.karmas.filter(karma => karma.review === 'us')
+            this.filteredTasks.ka = this.AllKarmas.filter(karma => karma.review === 'pe')
+            this.filteredTasks.sa = this.AllKarmas.filter(karma => karma.review === 'sa')
+            this.filteredTasks.un = this.AllKarmas.filter(karma => karma.review === 'us')
 
-            this.karmas.forEach(karma => {
+            this.AllKarmas.forEach(karma => {
                 karma.src = karma.type
             })
         },
@@ -146,7 +112,7 @@ export default {
 
         onDrop(event, list) {
             const itemID = event.dataTransfer.getData('itemID')
-            const item = this.karmas.find((karma) => karma.id == itemID)
+            const item = this.AllKarmas.find((karma) => karma.id == itemID)
             item.review = list
             this.filterItems()
             this.editKarma(itemID, list)            
@@ -232,15 +198,15 @@ export default {
     margin: 20px;
 }
 
-#karma {
+#ka {
         background-color: lightyellow;
     }
 
-    #satisfied {
-        background-color: lightgreen;
-    }
+#sa {
+    background-color: lightgreen;
+}
 
-    #unsatisfied {
-        background-color: #e99292;
-    }
+#us {
+    background-color: #e99292;
+}
 </style>
