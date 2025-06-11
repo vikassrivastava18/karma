@@ -144,7 +144,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
+# Add this if you are placing static in root (outside any app)
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+# Only used in production
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -152,8 +160,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRONJOBS = [
-    ('*/1 * * * *', 'api.cron.my_cron_job', '>> ' + os.path.join(BASE_DIR,'log/debug7.log' + ' 2>&1 '))
-#     30 11 * * * -> At 11:30 every day
+    ('45 11 * * *', 'api.cron.my_daily_update', '>> ' + os.path.join(BASE_DIR,'log/debug7.log' + ' 2>&1 ')),
+    # ('45 11 * * *', 'api.cron.my_daily_update', '>> ' + os.path.join(BASE_DIR,'log/debug7.log' + ' 2>&1 '))
+#     45 11 * * * -> At 11:30 every day '*/5 * * * *'
 ]
 
 CELERY_BROKER_URL = "redis://:hellYeah@2023@localhost:6379/0"

@@ -47,7 +47,6 @@
                 @dragover.prevent>
                 <card v-for="karma of complete" :key="karma.id" :id="karma.id" class="card" draggable="true"
                     @dragstart="startDrag($event, karma.id)">
-
                     <span >
 
                         <h5>{{ karma.todo}}
@@ -166,10 +165,10 @@ export default {
     margin: auto;
     justify-content: center;
     align-items: center;
+    padding-top: 50px;
 }
 
     .container {
-        background: #dee8ff;
         border-radius: 10px;
         padding: 20px;
         margin: 10px;
@@ -199,7 +198,6 @@ export default {
         padding: 10px;
         /* width: 300px; */
         margin-bottom: 20px;
-        background: white;
         border-radius: 10px;
         overflow-y: hidden;
         filter: drop-shadow(0 2px 7px #00000040);
