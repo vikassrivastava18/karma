@@ -11,12 +11,11 @@
             </h2>
             <div class="cards-wrapper" :key="todo" @drop="onDrop($event, 'to')" @dragenter.prevent @dragover.prevent>
                 <card v-for="karma of todos" :key="karma.id" :id="karma.id" class="card" draggable="true"
-                    @dragstart="startDrag($event, karma.id)">
-
-                    <span >
-                        <h5>{{ karma.todo}}
+                    @dragstart="startDrag($event, karma.id)" @dblclick="openDetails(karma)">
+                    <span>
+                    <h5>{{ karma.todo }}
                         <IconComponent :type="karma.todo_type" />
-                        </h5>
+                    </h5>
                     </span>
                 </card>
             </div>
@@ -29,10 +28,10 @@
             <div class="cards-wrapper" :key="inProgress" @drop="onDrop($event, 'pr')" @dragenter.prevent
                 @dragover.prevent>
                 <card v-for="karma of inProgress" :key="karma.id" :id="karma.id" class="card" draggable="true"
-                    @dragstart="startDrag($event, karma.id)">
+                    @dragstart="startDrag($event, karma.id)" @dblclick="openDetails(karma)">
                     <span>
-                       <h5> {{ karma.todo}}
-                        <IconComponent :type="karma.todo_type" />
+                        <h5> {{ karma.todo }}
+                            <IconComponent :type="karma.todo_type" />
                         </h5>
                     </span>
                 </card>
@@ -46,12 +45,11 @@
             <div class="cards-wrapper" :key="complete" @drop="onDrop($event, 'co')" @dragenter.prevent
                 @dragover.prevent>
                 <card v-for="karma of complete" :key="karma.id" :id="karma.id" class="card" draggable="true"
-                    @dragstart="startDrag($event, karma.id)">
+                    @dragstart="startDrag($event, karma.id)" @dblclick="openDetails(karma)">
 
-                    <span >
-
-                        <h5>{{ karma.todo}}
-                        <IconComponent :type="karma.todo_type" />
+                    <span>
+                        <h5>{{ karma.todo }}
+                            <IconComponent :type="karma.todo_type" />
                         </h5>
                     </span>
 
@@ -62,6 +60,16 @@
     </div>
 
     <ModalComponent @getTodos="getTodos" />
+
+    <div v-if="showDetails" class="details-modal">
+        <div class="details-content">
+            <h3>Todo Details</h3>
+            <p><strong>Title:</strong> {{ selectedTodo.todo }}</p>
+            <p><strong>Status:</strong> {{ selectedTodo.status }}</p>
+            <p><strong>Type:</strong> {{ selectedTodo.todo_type }}</p>
+            <button @click="closeDetails">Close</button>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -82,7 +90,9 @@ export default {
             AllTasks: [],
             todos: [],
             inProgress: [],
-            complete: []
+            complete: [],
+            showDetails: false,
+            selectedTodo: null
         };
     },
 
@@ -97,7 +107,7 @@ export default {
         },
         async getTodos() {
             const url = baseUrl + '/api/todos'
-            
+
             try {
                 const res = await this.$axios.get(url)
                 const data = res.data
@@ -120,6 +130,15 @@ export default {
             this.AllTasks.forEach(todo => {
                 todo.src = todo.type
             })
+        },
+        openDetails(todo) {
+            this.selectedTodo = todo;
+            this.showDetails = true;
+        },
+
+        closeDetails() {
+            this.selectedTodo = null;
+            this.showDetails = false;
         },
 
         async editKarma(id, list) {
@@ -168,83 +187,104 @@ export default {
     align-items: center;
 }
 
-    .container {
-        background: #dee8ff;
-        border-radius: 10px;
-        padding: 20px;
-        margin: 10px;
-        display: flex;
-        flex-direction: column;
-        max-height: 70vh;
-    }
+.container {
+    background: #dee8ff;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    max-height: 70vh;
+}
 
-    .cards-wrapper {
-        scrollbar-width: thin;
-        padding-inline: 10px;
-        padding-top: 10px;
-        /* max-height: calc(100vh - 100px); */
-        min-width: 328px;
-        border-radius: 10px;
-        overflow-y: scroll;
-        min-height: 100px;
-        flex-grow: 1;
-        transition: 0.3s;
-    }
+.cards-wrapper {
+    scrollbar-width: thin;
+    padding-inline: 10px;
+    padding-top: 10px;
+    /* max-height: calc(100vh - 100px); */
+    min-width: 328px;
+    border-radius: 10px;
+    overflow-y: scroll;
+    min-height: 100px;
+    flex-grow: 1;
+    transition: 0.3s;
+}
 
-    .card-placeable {
-        background: #0000000d;
-    }
+.card-placeable {
+    background: #0000000d;
+}
 
-    .card {
-        padding: 10px;
-        /* width: 300px; */
-        margin-bottom: 20px;
-        background: white;
-        border-radius: 10px;
-        overflow-y: hidden;
-        filter: drop-shadow(0 2px 7px #00000040);
-        display: flex;
-        flex-direction: column;
-        cursor: pointer;
-    }
+.card {
+    padding: 10px;
+    /* width: 300px; */
+    margin-bottom: 20px;
+    background: white;
+    border-radius: 10px;
+    overflow-y: hidden;
+    filter: drop-shadow(0 2px 7px #00000040);
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
 
-    .type {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        padding-block: 5px;
-        gap: 5px;
-        margin: -10px;
-        margin-bottom: 10px;
-    }
+.type {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-block: 5px;
+    gap: 5px;
+    margin: -10px;
+    margin-bottom: 10px;
+}
 
 
-    .fixed-size {
-        /* margin-top: 80vh; */
-        padding: 20px;
-        width: 800px;
-        /* Set your desired width */
-        height: 500px;
-        /* Set your desired height */
-        overflow: auto;
-        /* Add overflow if content exceeds the fixed size */
-    }
+.fixed-size {
+    /* margin-top: 80vh; */
+    padding: 20px;
+    width: 800px;
+    /* Set your desired width */
+    height: 500px;
+    /* Set your desired height */
+    overflow: auto;
+    /* Add overflow if content exceeds the fixed size */
+}
 
-    .daily-component {
-        text-align: center;
-        margin: 20px;
-    }
+.daily-component {
+    text-align: center;
+    margin: 20px;
+}
 
-    #todo {
-        background-color: lightyellow;
-    }
+#todo {
+    background-color: lightyellow;
+}
 
-    #inProgress {
-        background-color: lightblue;
-    }
+#inProgress {
+    background-color: lightblue;
+}
 
-    #complete {
-        background-color: lightgreen;
-    }
+#complete {
+    background-color: lightgreen;
+}
+
+.details-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.details-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    min-width: 300px;
+    box-shadow: 0 2px 10px #0003;
+}
 </style>

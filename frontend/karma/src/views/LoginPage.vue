@@ -1,6 +1,6 @@
 <template>
     
-    <div class="loginC p-4">
+    <div class="loginC p-5">
         <h2>Login</h2>
         <form @submit.prevent="submit" class="p-4">
             <div class="mb-3">

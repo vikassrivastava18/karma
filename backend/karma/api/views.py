@@ -84,12 +84,12 @@ class ReflectionView(generics.ListCreateAPIView):
     queryset = Reflection.objects.all()
     serializer_class = ReflectionSerializer
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         karmas = Reflection.objects.filter(date=today)
         serializer = ReflectionSerializer(karmas, many=True)
         return Response(serializer.data)
     
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         serializer = ReflectionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
