@@ -11,6 +11,7 @@ import prayerIcon from '@/assets/icons/prayer.svg';
 import playIcon from '@/assets/icons/sports.svg';
 import familyIcon from '@/assets/icons/family.svg';
 import publicIcon from '@/assets/icons/people.svg';
+import deletIcon from '@/assets/icons/delete.svg';
 // Import other icons as needed
 
 
@@ -37,6 +38,8 @@ export default {
                     return familyIcon;
                 case 'pu':
                     return publicIcon;
+                case 'ar':
+                    return deletIcon;
                 // Add more cases as needed
                 default:
                     return '';

@@ -1,62 +1,48 @@
 <template>
-    <div class="wrapper2">
 
-        <div class="container fixed-size" id="todo">
-            <h2>
-                TODO
-                <!-- Button trigger modal -->
-                <button type="button" class="btn px-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <img src="../assets/create.png" width="20" alt="create list">
-                </button>
-            </h2>
-            <div class="cards-wrapper" :key="todo" @drop="onDrop($event, 'to')" @dragenter.prevent @dragover.prevent>
-                <card v-for="karma of todos" :key="karma.id" :id="karma.id" class="card" draggable="true"
-                    @dragstart="startDrag($event, karma.id)" @dblclick="openDetails(karma)">
-                    <span>
-                    <h5>{{ karma.todo }}
-                        <IconComponent :type="karma.todo_type" />
-                    </h5>
-                    </span>
-                </card>
-            </div>
-        </div>
-
-        <div class="container fixed-size" id="inProgress">
-            <h2>
-                IN-PROGRESS
-            </h2>
-            <div class="cards-wrapper" :key="inProgress" @drop="onDrop($event, 'pr')" @dragenter.prevent
-                @dragover.prevent>
-                <card v-for="karma of inProgress" :key="karma.id" :id="karma.id" class="card" draggable="true"
-                    @dragstart="startDrag($event, karma.id)" @dblclick="openDetails(karma)">
-                    <span>
-                        <h5> {{ karma.todo }}
+    <div>
+        <div class="wrapper2">
+            <div 
+                v-for="status in statuses" 
+                :key="status.id" 
+                :id="status.id" 
+                class="container fixed-size">
+                <h2>
+                    {{ status.title }}
+                    <!-- Button trigger modal -->
+                    <button v-if="status.id == 'to'" type="button" class="btn px-2" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal">
+                        <img src="../assets/create.png" width="20" alt="create list">
+                    </button>
+                </h2>
+                <div 
+                    class="cards-wrapper" 
+                    :key="status.id" 
+                    @drop="onDrop($event, status.id)" 
+                    @dragover.prevent>
+                    
+                    <card 
+                        v-for="karma of filteredTasks[status.id]" 
+                        :key="karma.id" :id="karma.id" class="card"
+                        draggable="true" 
+                        @dragstart="startDrag($event, karma.id)"
+                        @dblclick="openDetails(karma.id)">
+                        <span class="content">
+                            <b>{{ karma.todo.split(' ')[0] }}</b> {{ karma.todo.split(' ').slice(1).join(' ') }}
                             <IconComponent :type="karma.todo_type" />
-                        </h5>
-                    </span>
-                </card>
+                            <IconComponent 
+                                :type="ar"
+                                style="float: right;"
+                                @click="archiveKarma(karma.id)" />
+                                
+                        </span>
+                    </card>
+                </div>
+
             </div>
         </div>
 
-        <div class="container fixed-size" id="complete">
-            <h2>
-                COMPLETED
-            </h2>
-            <div class="cards-wrapper" :key="complete" @drop="onDrop($event, 'co')" @dragenter.prevent
-                @dragover.prevent>
-                <card v-for="karma of complete" :key="karma.id" :id="karma.id" class="card" draggable="true"
-                    @dragstart="startDrag($event, karma.id)" @dblclick="openDetails(karma)">
-
-                    <span>
-                        <h5>{{ karma.todo }}
-                            <IconComponent :type="karma.todo_type" />
-                        </h5>
-                    </span>
-
-                </card>
-            </div>
-        </div>
-
+        <ModalComponent @getTodos="getTodos" />
     </div>
 
     <ModalComponent @getTodos="getTodos" />
@@ -70,6 +56,7 @@
             <button @click="closeDetails">Close</button>
         </div>
     </div>
+
 </template>
 
 <script>
@@ -88,17 +75,24 @@ export default {
     data() {
         return {
             AllTasks: [],
-            todos: [],
-            inProgress: [],
-            complete: [],
-            showDetails: false,
-            selectedTodo: null
+
+            statuses: [
+                { id: 'to', title: 'TODO' },
+                { id: 'pr', title: 'IN-PROGRESS' },
+                { id: 'co', title: 'COMPLETED' }
+            ],
+            filteredTasks: {
+                to: [],
+                pr: [],
+                co: []
+            },
+            ar: "ar"
         };
     },
 
     mounted() {
         // Get the items from backend
-        this.getTodos()
+        this.getTodos();
     },
     methods: {
         truncate(text, length) {
@@ -106,30 +100,23 @@ export default {
             return text.length > length ? text.substring(0, length) + '...' : text;
         },
         async getTodos() {
-            const url = baseUrl + '/api/todos'
+            const url = baseUrl + '/api/todos';
 
             try {
-                const res = await this.$axios.get(url)
-                const data = res.data
-                this.AllTasks = data
-                this.filterItems()
+                const res = await this.$axios.get(url);
+                const data = res.data;
+                this.AllTasks = data;
+                this.filterItems();
             } catch (error) {
-                console.error('Error:', error.message)
+                console.error('Error:', error.message);
                 // handle error (e.g., show an error message)
             }
         },
 
         filterItems() {
-            this.todos = this.AllTasks.filter(karma => karma.status === 'to')
-            this.inProgress = this.AllTasks.filter(karma => karma.status === 'pr')
-            this.complete = this.AllTasks.filter(karma => karma.status === 'co')
-            console.log("todos", this.todos);
-            console.log("inProgress", this.inProgress);
-            console.log("complete", this.complete);
-
-            this.AllTasks.forEach(todo => {
-                todo.src = todo.type
-            })
+            this.filteredTasks.to = this.AllTasks.filter(karma => karma.status === 'to');
+            this.filteredTasks.pr = this.AllTasks.filter(karma => karma.status === 'pr');
+            this.filteredTasks.co = this.AllTasks.filter(karma => karma.status === 'co');
         },
         openDetails(todo) {
             this.selectedTodo = todo;
@@ -142,35 +129,51 @@ export default {
         },
 
         async editKarma(id, list) {
-            // Modify for API
-            const karma = this.AllTasks.find(karma => karma.id == id)
-            const url = baseUrl + '/api/todos/' + id
-            const updatedData = { ...karma, "review": list }
+            const karma = this.AllTasks.find(karma => karma.id == id);
+            const url = baseUrl + '/api/todos/' + id;
+            const updatedData = { ...karma, "review": list };
 
             try {
-                await this.$axios.put(url, updatedData)
-                this.$emit('showToast')
+                await this.$axios.put(url, updatedData);
+                this.$emit('showToast');
             } catch (error) {
-                console.error('Error:', error.message)
-                this.$emit('errorToast')
+                console.error('Error:', error.message);
+                this.$emit('errorToast');
             }
+        },
 
+        async archiveKarma(id) {
+            const karma = this.AllTasks.find(karma => karma.id === id);
+            const url = `${baseUrl}/api/todos/${id}`;
+            const updatedData = { ...karma, status: 'ar' }; // Update status to 'ar'
+
+            try {
+                const res = await this.$axios.put(url, updatedData);
+                if (res.status === 200) {
+                    // Remove the item from the list
+                    this.AllTasks = this.AllTasks.filter(karma => karma.id !== id);
+                    this.filterItems(); // Update filtered tasks
+                    this.$emit('showToast', 'Item archived successfully!');
+                }
+            } catch (error) {
+                console.error('Error archiving item:', error.message);
+                this.$emit('errorToast', 'Failed to archive item.');
+            }
         },
 
         startDrag(event, id) {
-            event.dataTransfer.dropEffect = 'move'
-            event.dataTransfer.effectAllowed = 'move'
-            event.dataTransfer.setData('itemID', id)
-            console.log("card_id", id)
+            event.dataTransfer.dropEffect = 'move';
+            event.dataTransfer.effectAllowed = 'move';
+            event.dataTransfer.setData('itemID', id);
         },
 
         onDrop(event, list) {
-            const itemID = event.dataTransfer.getData('itemID')
-            const item = this.AllTasks.find(karma => karma.id == itemID)
-            item.status = list
-            this.filterItems()
-            this.editKarma(itemID, list)
-        },
+            const itemID = event.dataTransfer.getData('itemID');
+            const item = this.AllTasks.find(karma => karma.id == itemID);
+            item.status = list;
+            this.filterItems();
+            this.editKarma(itemID, list);
+        }
     }
 };
 </script>
@@ -185,6 +188,7 @@ export default {
     margin: auto;
     justify-content: center;
     align-items: center;
+    padding-top: 50px;
 }
 
 .container {
@@ -255,17 +259,6 @@ export default {
     margin: 20px;
 }
 
-#todo {
-    background-color: lightyellow;
-}
-
-#inProgress {
-    background-color: lightblue;
-}
-
-#complete {
-    background-color: lightgreen;
-}
 
 .details-modal {
     position: fixed;
@@ -287,4 +280,17 @@ export default {
     min-width: 300px;
     box-shadow: 0 2px 10px #0003;
 }
+
+#to {
+    background-color: lightyellow;
+}
+
+#pr {
+    background-color: lightblue;
+}
+
+#co {
+    background-color: lightgreen;
+}
+
 </style>

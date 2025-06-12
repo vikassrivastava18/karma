@@ -1,3 +1,4 @@
+from django.core.serializers import serialize
 from django.shortcuts import render
 from django.utils import timezone
 from datetime import timedelta
@@ -72,6 +73,15 @@ class ToDoDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
     queryset = Todo.objects.all()
     serializer_class = TodoSerializer
+
+    def put(self, request, *args, **kwargs):
+        if request.data['status'] == 'co':
+            request.data['completed_on'] = timezone.now()
+        serializer = TodoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.update(self.get_object(), serializer.validated_data)
+            return Response(request.data, status=200)
+        return Response(serializer.errors, status=400)
 
 
 class ReflectionView(generics.ListCreateAPIView):
