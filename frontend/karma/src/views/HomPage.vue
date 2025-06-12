@@ -1,11 +1,11 @@
 <template>
-    
-    <TodoComponent @showToast="showToastPopup" @errorToast="errorToast" />
+    <div>
+        <TodoComponent @showToast="showToastPopup" @errorToast="errorToast" />
 
-    <DailyComponent @showToast="showToastPopup" @errorToast="errorToast" />
-    
-    <ReflectionComponent @showToast="showToastPopup" @errorToast="errorToast" />        
-
+        <DailyComponent @showToast="showToastPopup" @errorToast="errorToast" />
+        
+        <ReflectionComponent @showToast="showToastPopup" @errorToast="errorToast" />        
+    </div>
 </template> 
 
 <script>

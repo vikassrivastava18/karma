@@ -19,12 +19,10 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
 
+        <ToastComponent />
+        
+        <ErrorToastComponent />
     </div>
-
-    <ToastComponent />
-    
-    <ErrorToastComponent />  
-
 </template>
 
 <script>

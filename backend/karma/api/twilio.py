@@ -9,7 +9,6 @@ def broadcast_sms(request):
     message_to_broadcast = ("How are you")
     client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
     for recipient in settings.SMS_BROADCAST_TO_NUMBERS:
-        print(recipient)
         if recipient:
             client.messages.create(to=recipient,
                                    from_=settings.TWILIO_NUMBER,
