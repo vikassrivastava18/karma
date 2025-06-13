@@ -4,7 +4,6 @@ from django.conf import settings
 from django.http import HttpResponse
 
 # Create your views here.
-
 def broadcast_sms(request):
     message_to_broadcast = ("How are you")
     client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)

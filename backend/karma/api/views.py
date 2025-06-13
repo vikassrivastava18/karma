@@ -35,6 +35,7 @@ class KarmaListView(generics.ListCreateAPIView):
 
     def get(self, request):
         karmas = Karma.objects.filter(date=today)
+        print("Karmas: ", karmas)
         serializer = KarmaSerializer(karmas, many=True)
         return Response(serializer.data)
 

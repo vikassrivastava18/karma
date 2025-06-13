@@ -33,8 +33,7 @@
                             <IconComponent 
                                 :type="ar"
                                 style="float: right;"
-                                @click="archiveKarma(karma.id)" />
-                                
+                                @click="archiveKarma(karma.id)" />                                
                         </span>
                     </card>
                 </div>
@@ -43,6 +42,15 @@
         </div>
 
         <ModalComponent @getTodos="getTodos" />
+        <div v-if="showDetails" class="todo-details-modal">
+            <div class="modal-content">
+                <h3>Todo Details</h3>
+                <p><strong>Title:</strong> {{ selectedTodo.todo }}</p>
+                <p><strong>Type:</strong> {{ selectedTodo.todo_type }}</p>
+                <p><strong>Status:</strong> {{ selectedTodo.status }}</p>
+                <button @click="closeDetails" class="btn btn-secondary">Close</button>
+            </div>
+        </div>
     </div>
 
     <ModalComponent @getTodos="getTodos" />
@@ -86,7 +94,9 @@ export default {
                 pr: [],
                 co: []
             },
-            ar: "ar"
+            ar: "ar",
+            showDetails: false,
+            selectedTodo: null
         };
     },
 
@@ -140,6 +150,19 @@ export default {
                 console.error('Error:', error.message);
                 this.$emit('errorToast');
             }
+        },
+
+        openDetails(id) {
+            const selectedTodo = this.AllTasks.find(karma => karma.id === id);
+            if (selectedTodo) {
+                this.showDetails = true;
+                this.selectedTodo = selectedTodo; // Store the selected todo item
+            }
+        },
+
+        closeDetails() {
+            this.showDetails = false;
+            this.selectedTodo = null; // Clear the selected todo item
         },
 
         async archiveKarma(id) {
