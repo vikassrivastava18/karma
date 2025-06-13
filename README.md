@@ -2,7 +2,7 @@
 ## About the Project
 
 Karma is a day-to-day task tracker designed to help users organize and manage their daily activities efficiently. Built using Docker, Django, and Vue.js, this application could be used for tracking tasks, setting priorities, and staying productive.
-![Karma Logo](https://ibb.co/CpkhzjRf "Karma Logo")
+![Karma Logo](https://i.ibb.co/20DgyzGT/Screenshot-from-2025-06-13-10-08-19.png "Karma Logo")
 ## Features
 
 - Create, update, and delete tasks.
