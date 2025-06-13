@@ -23,7 +23,8 @@
                     
                     <card 
                         v-for="karma of filteredTasks[status.id]" 
-                        :key="karma.id" :id="karma.id" class="card"
+                        :key="karma.id" :id="karma.id" 
+                        class="card p-3"
                         draggable="true" 
                         @dragstart="startDrag($event, karma.id)"
                         @dblclick="openDetails(karma.id)">
@@ -42,6 +43,7 @@
         </div>
 
         <ModalComponent @getTodos="getTodos" />
+
         <div v-if="showDetails" class="todo-details-modal">
             <div class="modal-content">
                 <h3>Todo Details</h3>
@@ -53,17 +55,6 @@
         </div>
     </div>
 
-    <ModalComponent @getTodos="getTodos" />
-
-    <div v-if="showDetails" class="details-modal">
-        <div class="details-content">
-            <h3>Todo Details</h3>
-            <p><strong>Title:</strong> {{ selectedTodo.todo }}</p>
-            <p><strong>Status:</strong> {{ selectedTodo.status }}</p>
-            <p><strong>Type:</strong> {{ selectedTodo.todo_type }}</p>
-            <button @click="closeDetails">Close</button>
-        </div>
-    </div>
 
 </template>
 
@@ -316,4 +307,60 @@ export default {
     background-color: lightgreen;
 }
 
+
+.todo-details-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ffffff; /* White background for modal */
+    padding: 30px; /* Increased padding for better spacing */
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow for modal */
+    z-index: 1000;
+    max-width: 500px; /* Limit modal width */
+    width: 90%; /* Responsive width */
+    animation: fadeIn 0.3s ease-in-out; /* Smooth fade-in animation */
+}
+
+.modal-content {
+    text-align: left;
+    font-family: 'Arial', sans-serif; /* Modern font */
+    line-height: 1.6; /* Improved readability */
+    padding: 10px;
+}
+
+.modal-content h3 {
+    margin-bottom: 20px;
+    font-size: 1.5rem; /* Larger heading */
+    color: #333; /* Darker text color */
+    border-bottom: 2px solid #007bff; /* Add a subtle underline */
+    padding-bottom: 10px;
+}
+
+.modal-content p {
+    margin-bottom: 10px;
+    font-size: 1rem; /* Standard text size */
+    color: #555; /* Softer text color */
+}
+
+.modal-content button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff; /* Bootstrap primary color */
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-size: 1rem; /* Slightly larger button text */
+}
+
+.modal-content button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+.content {
+    font-size: larger;
+}
 </style>
+

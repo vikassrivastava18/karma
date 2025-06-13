@@ -43,7 +43,7 @@ ul {
     float: right;
 }
 header {
-    background-color: #413d3d;
+    background: linear-gradient(to right, #2c3e50, #34495e, #2980b9, #3498db, #2ecc71);
     width: 100vw;
     margin-top: 0px;
 }
