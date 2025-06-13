@@ -23,7 +23,7 @@ Follow these steps to run the application using Docker:
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/karma.git
+    git clone https://github.com/vikassrivastava18/karma.git
     cd karma
     ```
 
@@ -37,7 +37,7 @@ Follow these steps to run the application using Docker:
     docker-compose up
     ```
 
-4. Access the application in your browser at `http://localhost:8000`.
+4. Access the application in your browser at `http://localhost:8080`.
 
 ## Stopping the Application
 
