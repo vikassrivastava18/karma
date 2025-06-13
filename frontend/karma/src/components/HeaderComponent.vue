@@ -7,10 +7,10 @@
                 </ul>
 
                 <div class="text-end" v-if="isAuthenticated">
-                    <button type="button" class="btn btn-outline-dark me-4" @click="logout">Logout</button>
+                    <button type="button" class="btn me-4" @click="logout">Logout</button>
                 </div>
                 <div class="text-end" v-else>
-                    <button type="button" class="btn btn-outline-dark me-4" @click="login">Login</button>
+                    <button type="button" class="btn me-4" @click="login">Login</button>
                     <!-- <button type="button" class="btn btn-warning">Sign-up</button> -->
                 </div>
             </div>

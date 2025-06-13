@@ -12,15 +12,7 @@ from .models import Karma, Todo, Reflection
 from .serializers import KarmaSerializer, ReflectionSerializer, TodoSerializer
 
 # Get today's date
-today = timezone.now().date() + timedelta(days=1)
-
-
-class HomeView(generics.GenericAPIView):
-    """
-        GET - Returns a welcome message
-    """
-    def get(self, request):
-        return render(request, 'index.html')
+today = timezone.now().date()
 
 
 class KarmaListView(generics.ListCreateAPIView):
@@ -33,11 +25,13 @@ class KarmaListView(generics.ListCreateAPIView):
     queryset = Karma.objects.all()
     serializer_class = KarmaSerializer
 
-    def get(self, request):
-        karmas = Karma.objects.filter(date=today)
-        print("Karmas: ", karmas)
-        serializer = KarmaSerializer(karmas, many=True)
-        return Response(serializer.data)
+    def get_queryset(self):
+        return Karma.objects.filter(date=today, user=self.request.user)
+
+    def post(self, request, *args, **kwargs):
+        # Automatically set the user field to the authenticated user
+        request.data['user'] = request.user.id
+        return super().post(request, *args, **kwargs)
 
 
 class KarmaDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -58,11 +52,14 @@ class ToDoListView(generics.ListCreateAPIView):
     queryset = Todo.objects.all()
     serializer_class = TodoSerializer
 
-    def get(self, request, *args, **kwargs):
-        todos = Todo.objects.all()
-        serializer = TodoSerializer(todos, many=True)
-        return Response(serializer.data)
-    
+    def get_queryset(self):
+        return Todo.objects.filter(user=self.request.user)
+
+    def post(self, request, *args, **kwargs):
+        # Automatically set the user field to the authenticated user
+        request.data['user'] = request.user.id
+        return super().post(request, *args, **kwargs)
+
 
 class ToDoDetailView(generics.RetrieveUpdateDestroyAPIView):
     """
@@ -78,11 +75,9 @@ class ToDoDetailView(generics.RetrieveUpdateDestroyAPIView):
     def put(self, request, *args, **kwargs):
         if request.data['status'] == 'co':
             request.data['completed_on'] = timezone.now()
-        serializer = TodoSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.update(self.get_object(), serializer.validated_data)
-            return Response(request.data, status=200)
-        return Response(serializer.errors, status=400)
+
+        request.data['user'] = request.user.id
+        return super().update(request, *args, **kwargs)
 
 
 class ReflectionView(generics.ListCreateAPIView):
@@ -95,14 +90,11 @@ class ReflectionView(generics.ListCreateAPIView):
     queryset = Reflection.objects.all()
     serializer_class = ReflectionSerializer
 
-    def get(self, request):
-        karmas = Reflection.objects.filter(date=today)
-        serializer = ReflectionSerializer(karmas, many=True)
-        return Response(serializer.data)
-    
-    def post(self, request):
-        serializer = ReflectionSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
+    def get_queryset(self):
+        return ReflectionSerializer.objects.filter(user=self.request.user)
+
+    def post(self, request, *args, **kwargs):
+        # Automatically set the user field to the authenticated user
+        request.data['user'] = request.user.id
+        return super().post(request, *args, **kwargs)
+

@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 from django.db import models
 
@@ -49,6 +50,7 @@ class Karma(models.Model):
         choices= KarmaReview.choices,
         default=KarmaReview.PENDING
     )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def get_review_display_name(self):
         return self.get_review_display()
@@ -63,6 +65,7 @@ class DayReview(models.Model):
     """
     review = models.TextField()
     date = models.DateField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f"Review: {self.review:20}"
@@ -89,10 +92,11 @@ class Todo(models.Model):
         max_length=2,
         choices=TodoStatus.choices,
         default=TodoStatus.TODO
-    )
+    )    
     created_on = models.DateField(auto_now=True)
     deadline = models.DateField()
     completed_on = models.DateTimeField(null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def get_todo_type_display_name(self):
         return self.get_todo_type_display()
@@ -107,6 +111,7 @@ class Reflection(models.Model):
     """
     reflection = models.TextField()
     date = models.DateField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f"{self.date}, Reflection: {self.reflection:20}"
