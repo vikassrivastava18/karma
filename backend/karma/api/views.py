@@ -73,6 +73,9 @@ class ToDoDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TodoSerializer
 
     def put(self, request, *args, **kwargs):
+        # Testing Twilio code
+        from api.twilio import broadcast_sms
+        broadcast_sms()
         if request.data['status'] == 'co':
             request.data['completed_on'] = timezone.now()
 
