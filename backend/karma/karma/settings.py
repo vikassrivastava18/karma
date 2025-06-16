@@ -163,6 +163,8 @@ CRONJOBS = [
     ('0 12-21 * * *', 'api.twilio.my_hourly_status', '>> ' + os.path.join(BASE_DIR,'log/debug7.log' + ' 2>&1 ')),
     ('30 11 * * *', 'api.twilio.my_daily_update', '>> ' + os.path.join(BASE_DIR,'log/debug7.log' + ' 2>&1 ')),
     ('0 9 * * *', 'api.twilio.my_todays_todos', '>> ' + os.path.join(BASE_DIR,'log/debug7.log' + ' 2>&1 ')),
+
+    ('37 17 * * *', 'api.twilio.my_hourly_status', '>> ' + os.path.join(BASE_DIR,'log/debug7.log' + ' 2>&1 ')),
 ]
 
 CELERY_BROKER_URL = "redis://:hellYeah@2023@localhost:6379/0"

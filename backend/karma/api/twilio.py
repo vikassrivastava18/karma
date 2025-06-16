@@ -11,21 +11,21 @@ from api.models import Todo, UserProfile
 # Create your views here.
 def my_hourly_status():
     # Send messages to vikas
-    users = User.objects.all()
-    for user in users:
-        # Find pending todos that are not archived, and send sms
-        phone_number = UserProfile.objects.get(user=user).phone_number
-        if not phone_number:
-            continue
-        pending_todos = Todo.objects.filter(
-            Q(status='TODO') | Q(status='PROGRESS'),
-            deadline__lt=timezone.now(),
-            user=user,
-            archived=False
-        )
+    user = User.objects.get(username='vikas')
+    # for user in users:
+    #     # Find pending todos that are not archived, and send sms
+    phone_number = UserProfile.objects.get(user=user).phone_number
+    # if not phone_number:
+    #     continue
+    pending_todos = Todo.objects.filter(
+        Q(status='to') | Q(status='pr'),
+        deadline__lt=timezone.now(),
+        user=user,
+    )
+    if len(pending_todos > 0):
         message_to_broadcast = "\n".join([todo.todo for todo in pending_todos])
 
-        message_to_broadcast = ("Pending Todos:")
+        message_to_broadcast = ("Pending Todos: \n" + message_to_broadcast)
         client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
         client.messages.create(to=phone_number,
                                     from_=settings.TWILIO_NUMBER,
