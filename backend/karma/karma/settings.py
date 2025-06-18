@@ -160,10 +160,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRONJOBS = [
-    ('0 12-21 * * *', 'api.twilio.my_hourly_status', '>> ' + os.path.join(BASE_DIR,'log/debug7.log' + ' 2>&1 ')),
+    ('0 10-21 * * *', 'api.twilio.my_hourly_status', '>> ' + os.path.join(BASE_DIR,'log/debug7.log' + ' 2>&1 ')),
     ('30 11 * * *', 'api.twilio.my_daily_update', '>> ' + os.path.join(BASE_DIR,'log/debug7.log' + ' 2>&1 ')),
     ('0 9 * * *', 'api.twilio.my_todays_todos', '>> ' + os.path.join(BASE_DIR,'log/debug7.log' + ' 2>&1 ')),
-
     ('37 17 * * *', 'api.twilio.my_hourly_status', '>> ' + os.path.join(BASE_DIR,'log/debug7.log' + ' 2>&1 ')),
 ]
 
