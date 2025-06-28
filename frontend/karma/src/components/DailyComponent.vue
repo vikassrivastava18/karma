@@ -26,7 +26,6 @@
             </div>
         </div>
 
-
     </div>
 </template>
 
@@ -44,15 +43,16 @@ export default {
         return {
             AllKarmas: [],
             statuses: [
-                {id: 'pe', 'title': 'DAILY'},
+                {id: 'ka', 'title': 'DAILY'},
                 {id: 'sa', 'title': 'SATISFIED'},
                 {id: 'us', 'title': 'UNSATISFIED'}
             ],
             filteredTasks: {
-                pe: [],
+                ka: [],
                 sa: [],
                 us: []
-            }            
+            }
+            
         };
     },
 
@@ -67,7 +67,7 @@ export default {
             try {
                 const res = await this.$axios.get(url)
                 this.AllKarmas = res.data
-                console.log("Al Karmas: ", res.data);
+                console.log("All Karmas: ", this.AllKarmas);
                 
                 this.filterItems()
             } catch (error) {
@@ -95,9 +95,9 @@ export default {
         },
 
         filterItems() {
-            this.filteredTasks['pe'] = this.AllKarmas.filter(karma => karma.review === 'pe')
-            this.filteredTasks['sa'] = this.AllKarmas.filter(karma => karma.review === 'sa')
-            this.filteredTasks['us'] = this.AllKarmas.filter(karma => karma.review === 'us')
+            this.filteredTasks.ka = this.AllKarmas.filter(karma => karma.review === 'pe')
+            this.filteredTasks.sa = this.AllKarmas.filter(karma => karma.review === 'sa')
+            this.filteredTasks.us = this.AllKarmas.filter(karma => karma.review === 'us')
 
             this.AllKarmas.forEach(karma => {
                 karma.src = karma.type

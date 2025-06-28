@@ -50,13 +50,15 @@ axios.interceptors.request.use((config) => {
   }
   return config
 })
-// 
-// // Response interceptor
-// axios.interceptors.response.use((response) => {
-//   // Handle the response here
-//   return response
-// }, (error) => {
-//   // Handle errors here
-//   console.error(error)
-//   return Promise.reject(error)
-// })
+
+axios.interceptors.response.use(
+  response => response,
+  error => {
+    // Add more error handling here
+    if (error.response && error.response.status === 400) {
+      window.location.href = '/'; // Redirect to home
+    }
+    return Promise.reject(error);
+  }
+);
+

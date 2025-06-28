@@ -97,4 +97,3 @@ class ReflectionView(generics.ListCreateAPIView):
         # Automatically set the user field to the authenticated user
         request.data['user'] = request.user.id
         return super().post(request, *args, **kwargs)
-
