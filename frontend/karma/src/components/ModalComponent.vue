@@ -26,8 +26,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="todoTimeline" class="form-label">Timeline for completion</label>
-                            <input type="date" class="form-control" id="todoTimeline" v-model="timeline"
-                                placeholder="Enter your todo">
+                            <input type="datetime-local" class="form-control" id="todoTimeline" v-model="timeline"
+                                placeholder="Enter task deadline">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" 
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 const baseUrl = 'http://localhost:8000';
 // import { Modal } from 'bootstrap';
 
@@ -57,7 +58,7 @@ export default {
     methods: {
         async saveTodo(e) {
             e.preventDefault();
-            console.log(this.todo, this.type, this.timeline);
+
             const url = baseUrl + '/api/todos';
             const init_obj = {
                 method: 'POST',
