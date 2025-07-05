@@ -4,7 +4,7 @@
         
         <div v-for="status in statuses" :key="status.id" :id="status.id" class="container fixed-size">
             <h2>
-                {{ status.title }}
+                {{ status.title }} 
                 <!-- Button trigger modal -->
                 <button type="button" class="btn px-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 </button>
@@ -19,7 +19,6 @@
                     </span>
                     
                     <span class="content" v-html="karma.karma">
-
                     </span>
 
                 </card>

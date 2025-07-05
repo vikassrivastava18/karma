@@ -15,6 +15,12 @@ def next_day_date():
 def prev_day_date():
     return timezone.now() - timedelta(days=1)
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    phone_number = models.CharField(max_length=20, blank=True)
+
+    def __str__(self):
+        return self.user.username
 
 class KarmaType(models.TextChoices):
     PRAYER = "pr", _("Prayer")
@@ -94,7 +100,7 @@ class Todo(models.Model):
         default=TodoStatus.TODO
     )    
     created_on = models.DateField(auto_now=True)
-    deadline = models.DateField()
+    deadline = models.DateTimeField(null=True, blank=True)
     completed_on = models.DateTimeField(null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 

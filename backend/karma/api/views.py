@@ -1,12 +1,8 @@
-from django.core.serializers import serialize
-from django.shortcuts import render
 from django.utils import timezone
-from datetime import timedelta
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 from rest_framework import generics
-from rest_framework.response import Response
 
 from .models import Karma, Todo, Reflection
 from .serializers import KarmaSerializer, ReflectionSerializer, TodoSerializer
@@ -26,6 +22,7 @@ class KarmaListView(generics.ListCreateAPIView):
     serializer_class = KarmaSerializer
 
     def get_queryset(self):
+        print(Karma.objects.filter(date=today))
         return Karma.objects.filter(date=today, user=self.request.user)
 
     def post(self, request, *args, **kwargs):
@@ -97,3 +94,4 @@ class ReflectionView(generics.ListCreateAPIView):
         # Automatically set the user field to the authenticated user
         request.data['user'] = request.user.id
         return super().post(request, *args, **kwargs)
+
