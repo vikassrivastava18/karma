@@ -50,14 +50,14 @@ export default {
                 ka: [],
                 sa: [],
                 us: []
-            }
-            
+            }            
         };
     },
 
     mounted() {
         this.getKarmas()
     },
+    
     methods: {
         async getKarmas() {
             // Modiify for API

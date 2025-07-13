@@ -2,11 +2,7 @@
 
     <div>
         <div class="wrapper2">
-            <div 
-                v-for="status in statuses" 
-                :key="status.id" 
-                :id="status.id" 
-                class="container fixed-size">
+            <div v-for="status in statuses" :key="status.id" :id="status.id" class="container fixed-size">
                 <h2>
                     {{ status.title }}
                     <!-- Button trigger modal -->
@@ -15,26 +11,20 @@
                         <img src="../assets/create.png" width="20" alt="create list">
                     </button>
                 </h2>
-                <div 
-                    class="cards-wrapper" 
-                    :key="status.id" 
-                    @drop="onDrop($event, status.id)" 
-                    @dragover.prevent>
-                    
-                    <card 
-                        v-for="karma of filteredTasks[status.id]" 
+                <div class="cards-wrapper" :key="status.id" @drop="onDrop($event, status.id)" @dragover.prevent>
+
+                    <card v-for="karma of filteredTasks[status.id]" 
                         :key="karma.id" :id="karma.id" 
                         class="card p-3"
+                        :class="{ overdue: overdueTaskIds.includes(karma.id) }"
                         draggable="true" 
                         @dragstart="startDrag($event, karma.id)"
                         @dblclick="openDetails(karma.id)">
+
                         <span class="content">
                             <b>{{ karma.todo.split(' ')[0] }}</b> {{ karma.todo.split(' ').slice(1).join(' ') }}
                             <IconComponent :type="karma.todo_type" />
-                            <IconComponent 
-                                :type="ar"
-                                style="float: right;"
-                                @click="archiveKarma(karma.id)" />                                
+                            <IconComponent :type="ar" style="float: right;" @click="archiveKarma(karma.id)" />
                         </span>
                     </card>
                 </div>
@@ -91,9 +81,19 @@ export default {
         };
     },
 
+    computed: {
+        overdueTaskIds() {
+            const now = new Date();
+            return this.AllTasks
+                .filter(karma => karma.deadline && karma.status !== 'co' && new Date(karma.deadline) < now)
+                .map(karma => karma.id);
+        }
+    },
+
     mounted() {
         // Get the items from backend
         this.getTodos();
+        document.addEventListener('visibilitychange', this.handleVisibilityChange);
     },
     methods: {
         truncate(text, length) {
@@ -119,6 +119,7 @@ export default {
             this.filteredTasks.pr = this.AllTasks.filter(karma => karma.status === 'pr');
             this.filteredTasks.co = this.AllTasks.filter(karma => karma.status === 'co');
         },
+
         openDetails(todo) {
             this.selectedTodo = todo;
             this.showDetails = true;
@@ -187,7 +188,21 @@ export default {
             item.status = list;
             this.filterItems();
             this.editKarma(itemID, list);
-        }
+        },
+
+        handleVisibilityChange() {
+            if (document.visibilityState === 'visible') {
+                console.log("Tab changed to Karma Page");
+                
+                // Force Vue to re-evaluate computed properties
+                // This will trigger reactivity for overdueTaskIds
+                this.AllTasks = [...this.AllTasks];
+            }
+        },
+    },
+
+    beforeDestroy() {
+        document.removeEventListener('visibilitychange', this.handleVisibilityChange);
     }
 };
 </script>
@@ -313,35 +328,49 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: #ffffff; /* White background for modal */
-    padding: 30px; /* Increased padding for better spacing */
-    border-radius: 15px; /* Rounded corners */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow for modal */
+    background: #ffffff;
+    /* White background for modal */
+    padding: 30px;
+    /* Increased padding for better spacing */
+    border-radius: 15px;
+    /* Rounded corners */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    /* Enhanced shadow for modal */
     z-index: 1000;
-    max-width: 500px; /* Limit modal width */
-    width: 90%; /* Responsive width */
-    animation: fadeIn 0.3s ease-in-out; /* Smooth fade-in animation */
+    max-width: 500px;
+    /* Limit modal width */
+    width: 90%;
+    /* Responsive width */
+    animation: fadeIn 0.3s ease-in-out;
+    /* Smooth fade-in animation */
 }
 
 .modal-content {
     text-align: left;
-    font-family: 'Arial', sans-serif; /* Modern font */
-    line-height: 1.6; /* Improved readability */
+    font-family: 'Arial', sans-serif;
+    /* Modern font */
+    line-height: 1.6;
+    /* Improved readability */
     padding: 10px;
 }
 
 .modal-content h3 {
     margin-bottom: 20px;
-    font-size: 1.5rem; /* Larger heading */
-    color: #333; /* Darker text color */
-    border-bottom: 2px solid #007bff; /* Add a subtle underline */
+    font-size: 1.5rem;
+    /* Larger heading */
+    color: #333;
+    /* Darker text color */
+    border-bottom: 2px solid #007bff;
+    /* Add a subtle underline */
     padding-bottom: 10px;
 }
 
 .modal-content p {
     margin-bottom: 10px;
-    font-size: 1rem; /* Standard text size */
-    color: #555; /* Softer text color */
+    font-size: 1rem;
+    /* Standard text size */
+    color: #555;
+    /* Softer text color */
 }
 
 .modal-content button {
@@ -349,18 +378,25 @@ export default {
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    background-color: #007bff; /* Bootstrap primary color */
+    background-color: #007bff;
+    /* Bootstrap primary color */
     color: #ffffff;
     cursor: pointer;
     transition: background-color 0.3s;
-    font-size: 1rem; /* Slightly larger button text */
+    font-size: 1rem;
+    /* Slightly larger button text */
 }
 
 .modal-content button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #0056b3;
+    /* Darker blue on hover */
 }
+
 .content {
     font-size: larger;
 }
-</style>
 
+.overdue {
+    background-color: #ffcccc !important;
+}
+</style>

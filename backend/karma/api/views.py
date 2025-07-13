@@ -22,7 +22,6 @@ class KarmaListView(generics.ListCreateAPIView):
     serializer_class = KarmaSerializer
 
     def get_queryset(self):
-        print(Karma.objects.filter(date=today))
         return Karma.objects.filter(date=today, user=self.request.user)
 
     def post(self, request, *args, **kwargs):
