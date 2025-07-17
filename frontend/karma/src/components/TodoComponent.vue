@@ -50,10 +50,10 @@
 
 <script>
 /* eslint-disable */
+import { baseUrl } from '../config'
 import IconComponent from './IconComponent.vue';
 import ModalComponent from './ModalComponent.vue';
 
-const baseUrl = 'http://localhost:8000';
 
 export default {
     name: 'TodoComponent',

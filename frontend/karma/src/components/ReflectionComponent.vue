@@ -12,7 +12,7 @@
 
 <script>
 /* eslint-disable */
-const baseUrl = 'http://localhost:8000';
+import { baseUrl } from '../config';
 export default {
     name: 'RelectionComponent',
     data() {

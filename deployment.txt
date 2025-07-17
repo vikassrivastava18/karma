@@ -1,0 +1,27 @@
+PublicIPs: 15.207.111.143    
+
+ssh -i ~/.ssh/karma.pem ubuntu@15.207.111.143
+
+scp -i ~/.ssh/karma.pem -r /mnt/c/Users/vikas/Documents/karma-prod ubuntu@15.207.111.143:~/app
+
+Remove a directory: rm -rf dir1
+
+const baseUrl = 'http://15.207.111.143:8000';
+const baseUrl = 'http://15.207.111.143:8000';
+
+Docker compose command
+sudo docker-compose down  (To stop the containers)
+sudo docker-compose build frontend
+sudo docker-compose up -d frontend
+
+sudo docker-compose build backend
+sudo docker-compose up -d backend 
+
+Logs
+sudo docker-compose logs backend
+sudo docker-compose logs frontend
+
+http://15.207.111.143:8000/api/tasks
+
+// Remove docker space
+sudo docker system prune -a

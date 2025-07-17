@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { baseUrl } from '../config';
 import ToastComponent from '../components/ToastComponent.vue';
 import ErrorToastComponent from '../components/ErrorToastComponent.vue';
 
@@ -50,8 +51,9 @@ export default {
         ...mapActions(['login']),
         
         async submit() {
+            console.log("COnfig: ", baseUrl);
             
-            const url = 'http://127.0.0.1:8000/login'
+            const url = baseUrl + '/login'
             const init_obj = {
                 method: 'POST',
                 headers: {

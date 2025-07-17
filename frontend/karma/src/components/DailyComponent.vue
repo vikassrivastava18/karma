@@ -31,7 +31,7 @@
 <script>
 
 import IconComponent from './IconComponent.vue';
-const baseUrl = 'http://localhost:8000';
+import { baseUrl } from '../config';
 
 export default {
     name: 'DailyComponent',
