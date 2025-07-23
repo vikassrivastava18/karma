@@ -8,7 +8,8 @@ WORKDIR /app
 COPY frontend/karma/package.json . 
 RUN npm install
 
-COPY . .
+
+COPY ./frontend/karma /app
 
 EXPOSE 8080
 

@@ -1,4 +1,5 @@
 from django.utils import timezone
+from django.utils.timezone import localdate
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
@@ -7,8 +8,7 @@ from rest_framework import generics
 from .models import Karma, Todo, Reflection
 from .serializers import KarmaSerializer, ReflectionSerializer, TodoSerializer
 
-# Get today's date
-today = timezone.now().date()
+# Get today's date based on the timezone in settings.py
 
 
 class KarmaListView(generics.ListCreateAPIView):
@@ -22,6 +22,7 @@ class KarmaListView(generics.ListCreateAPIView):
     serializer_class = KarmaSerializer
 
     def get_queryset(self):
+        today = localdate()
         return Karma.objects.filter(date=today, user=self.request.user)
 
     def post(self, request, *args, **kwargs):
@@ -69,6 +70,7 @@ class ToDoDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TodoSerializer
 
     def put(self, request, *args, **kwargs):
+        
         if request.data['status'] == 'co':
             request.data['completed_on'] = timezone.now()
 
